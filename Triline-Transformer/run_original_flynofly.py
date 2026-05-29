@@ -105,6 +105,8 @@ def train_one_k(
     std: np.ndarray,
     output_dir: Path,
     data_summary: dict[str, object],
+    use_bird_id: bool = True,
+    model_name: str = "triline_multitask",
 ) -> dict[str, object]:
     set_seed(SEED + k)
     model_dir = output_dir / f"k_{k}"
@@ -120,6 +122,7 @@ def train_one_k(
         n_features=normalized_features.shape[-1],
         n_birds=len(window_data.bird_to_idx),
         max_k=k,
+        use_bird_id=use_bird_id,
     ).to(device)
 
     train_positive = float(window_data.labels[train_idx].sum())
@@ -202,7 +205,9 @@ def train_one_k(
                     "feature_mean": mean,
                     "feature_std": std,
                     "feature_columns": window_data.feature_columns,
+                    "n_features": len(window_data.feature_columns),
                     "bird_to_idx": window_data.bird_to_idx,
+                    "use_bird_id": use_bird_id,
                     "pos_weight": pos_weight_value,
                     "data_summary": data_summary,
                 },
@@ -233,6 +238,10 @@ def train_one_k(
 
     metrics_payload: dict[str, object] = {
         "k": k,
+        "model": model_name,
+        "use_bird_id": bool(use_bird_id),
+        "n_features": int(len(window_data.feature_columns)),
+        "feature_columns": window_data.feature_columns,
         "fly_threshold_km": FLY_THRESHOLD_KM,
         "train_samples": int(len(train_idx)),
         "test_samples": int(len(test_idx)),

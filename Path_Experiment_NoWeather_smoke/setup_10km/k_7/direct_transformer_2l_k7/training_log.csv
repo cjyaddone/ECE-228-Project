@@ -1,0 +1,2 @@
+epoch,train_loss,test_delta_mse_norm,lr
+1,0.6762757621042812,1.1437915843130764,0.001

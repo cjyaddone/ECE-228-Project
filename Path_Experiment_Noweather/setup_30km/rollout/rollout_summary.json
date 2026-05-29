@@ -1,0 +1,17 @@
+{
+  "setup": "setup_30km",
+  "path_id": "Sierit_DER_AN858_eobs2561__2020__southbound_01",
+  "selection_rule": "strict_test_path",
+  "context_days": 30,
+  "rollout_steps": 60,
+  "direct_model": "direct_mlp_last_day_k1",
+  "direct_k": 1,
+  "triline_model": "triline_lstm_2l_k7",
+  "triline_k": 7,
+  "direct_mean_rollout_error_km": 579.5691005452737,
+  "direct_final_rollout_error_km": 361.74298910204374,
+  "triline_mean_rollout_error_km": 204.14335709392563,
+  "triline_final_rollout_error_km": 344.63238646893234,
+  "csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\Path_Experiment_NoWeather\\setup_30km\\rollout\\rollout_predictions.csv",
+  "svg": "D:\\UCSD\\ECE 228\\ECE-228-Project\\Path_Experiment_NoWeather\\setup_30km\\rollout\\rollout_plot.svg"
+}

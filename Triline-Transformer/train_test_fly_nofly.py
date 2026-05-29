@@ -265,9 +265,11 @@ def train_network_one_split(
     std: np.ndarray,
     output_dir: Path,
     data_summary: dict[str, object],
+    use_bird_id: bool = True,
+    model_name: str = "triline_multitask",
 ) -> dict[str, object]:
     set_seed(SEED + k + (1000 if split_mode == "stratified" else 0))
-    model_dir = output_dir / split_mode / f"k_{k}" / "triline_multitask"
+    model_dir = output_dir / split_mode / f"k_{k}" / model_name
     model_dir.mkdir(parents=True, exist_ok=True)
 
     train_dataset, test_dataset = make_datasets(normalized_features, window_data, train_idx, test_idx)
@@ -280,6 +282,7 @@ def train_network_one_split(
         n_features=normalized_features.shape[-1],
         n_birds=len(window_data.bird_to_idx),
         max_k=k,
+        use_bird_id=use_bird_id,
     ).to(device)
 
     train_positive = float(window_data.labels[train_idx].sum())
@@ -365,7 +368,9 @@ def train_network_one_split(
                     "feature_mean": mean,
                     "feature_std": std,
                     "feature_columns": window_data.feature_columns,
+                    "n_features": len(window_data.feature_columns),
                     "bird_to_idx": window_data.bird_to_idx,
+                    "use_bird_id": use_bird_id,
                     "pos_weight": pos_weight_value,
                     "raw_pos_weight": raw_pos_weight,
                     "data_summary": data_summary,
@@ -401,9 +406,12 @@ def train_network_one_split(
     )
 
     metrics_payload: dict[str, object] = {
-        "model": "triline_multitask",
+        "model": model_name,
         "split_mode": split_mode,
         "k": k,
+        "use_bird_id": bool(use_bird_id),
+        "n_features": int(len(window_data.feature_columns)),
+        "feature_columns": window_data.feature_columns,
         "fly_threshold_km": FLY_THRESHOLD_KM,
         "train_samples": int(len(train_idx)),
         "test_samples": int(len(test_idx)),
@@ -459,6 +467,8 @@ def run_classifier_baseline(
         "model": name,
         "split_mode": split_mode,
         "k": k,
+        "n_features": int(len(window_data.feature_columns)),
+        "feature_columns": window_data.feature_columns,
         "train_samples": int(len(train_idx)),
         "test_samples": int(len(test_idx)),
         "train_fly_rate": float(window_data.labels[train_idx].mean()),
@@ -488,9 +498,10 @@ def run_rule_baseline(
     baseline_dir = output_dir / split_mode / f"k_{k}" / name
     baseline_dir.mkdir(parents=True, exist_ok=True)
 
-    step_idx = FEATURE_COLUMNS.index("step_length_km")
-    step_mean_7_idx = FEATURE_COLUMNS.index("step_mean_7")
-    step_max_7_idx = FEATURE_COLUMNS.index("step_max_7")
+    feature_columns = window_data.feature_columns
+    step_idx = feature_columns.index("step_length_km")
+    step_mean_7_idx = feature_columns.index("step_mean_7")
+    step_max_7_idx = feature_columns.index("step_max_7")
 
     if score_kind == "recent_max_step":
         scores = raw_features[test_idx, :, step_idx].max(axis=1)
@@ -521,6 +532,8 @@ def run_rule_baseline(
         "model": name,
         "split_mode": split_mode,
         "k": k,
+        "n_features": int(len(window_data.feature_columns)),
+        "feature_columns": window_data.feature_columns,
         "train_samples": int(len(train_idx)),
         "test_samples": int(len(test_idx)),
         "train_fly_rate": float(window_data.labels[train_idx].mean()),
@@ -581,6 +594,11 @@ def run_baselines(
             output_dir,
         ),
     ]
+    available = set(window_data.feature_columns)
+    required_for_rules = {"step_length_km", "step_mean_7", "step_max_7"}
+    if not required_for_rules.issubset(available):
+        return rows
+
     for name, score_kind in [
         ("rule_recent_max_step", "recent_max_step"),
         ("rule_last_rolling_step_max_7", "last_rolling_step_max_7"),

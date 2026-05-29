@@ -17,11 +17,17 @@ class TrilineTransformer(nn.Module):
         n_layers: int = 2,
         dropout: float = 0.1,
         bird_embedding_dim: int = 2,
+        use_bird_id: bool = True,
     ) -> None:
         super().__init__()
+        self.use_bird_id = use_bird_id
         self.feature_projection = nn.Linear(n_features, d_model)
-        self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
-        self.bird_projection = nn.Linear(bird_embedding_dim, d_model)
+        if self.use_bird_id:
+            self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
+            self.bird_projection = nn.Linear(bird_embedding_dim, d_model)
+        else:
+            self.bird_embedding = None
+            self.bird_projection = None
         self.positional_embedding = nn.Parameter(torch.zeros(1, max_k, d_model))
 
         encoder_layer = nn.TransformerEncoderLayer(
@@ -54,7 +60,8 @@ class TrilineTransformer(nn.Module):
         seq_len = features.shape[1]
         x = self.feature_projection(features)
         x = x + self.positional_embedding[:, :seq_len, :]
-        x = x + self.bird_projection(self.bird_embedding(bird_ids)).unsqueeze(1)
+        if self.use_bird_id:
+            x = x + self.bird_projection(self.bird_embedding(bird_ids)).unsqueeze(1)
         encoded = self.encoder(x)
         pooled = encoded.mean(dim=1)
         return {

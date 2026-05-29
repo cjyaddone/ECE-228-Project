@@ -202,9 +202,15 @@ def build_windows(
     k: int,
     fly_threshold_km: float = 30.0,
     target_months: set[int] | None = None,
+    feature_columns: list[str] | None = None,
 ) -> WindowData:
     """Build calendar-consecutive windows with Sep-Dec targets and all-month context."""
     target_months = target_months or TARGET_MONTHS
+    feature_columns = feature_columns or FEATURE_COLUMNS.copy()
+    unknown_columns = sorted(set(feature_columns) - set(FEATURE_COLUMNS))
+    if unknown_columns:
+        raise ValueError(f"Unknown feature columns: {unknown_columns}")
+
     featured = add_engineered_features(df)
     bird_names = sorted(featured["individual_local_identifier"].unique())
     bird_to_idx = {bird: idx for idx, bird in enumerate(bird_names)}
@@ -235,7 +241,7 @@ def build_windows(
             heading_rad = math.radians(heading_deg)
 
             input_rows = bird_df.iloc[start:end]
-            features.append(input_rows[FEATURE_COLUMNS].to_numpy(dtype=np.float32))
+            features.append(input_rows[feature_columns].to_numpy(dtype=np.float32))
             labels.append(float(step_km > fly_threshold_km))
             log_distance_targets.append(math.log1p(max(step_km, 0.0)))
             direction_targets.append((math.sin(heading_rad), math.cos(heading_rad)))
@@ -244,7 +250,7 @@ def build_windows(
             target_step_km.append(step_km)
 
     if not features:
-        empty_features = np.empty((0, k, len(FEATURE_COLUMNS)), dtype=np.float32)
+        empty_features = np.empty((0, k, len(feature_columns)), dtype=np.float32)
         return WindowData(
             empty_features,
             np.empty((0,), dtype=np.float32),
@@ -254,7 +260,7 @@ def build_windows(
             np.empty((0,), dtype="datetime64[ns]"),
             np.empty((0,), dtype=np.float32),
             bird_to_idx,
-            FEATURE_COLUMNS.copy(),
+            feature_columns.copy(),
         )
 
     return WindowData(
@@ -266,7 +272,7 @@ def build_windows(
         target_dates=np.asarray(target_dates, dtype="datetime64[ns]"),
         target_step_km=np.asarray(target_step_km, dtype=np.float32),
         bird_to_idx=bird_to_idx,
-        feature_columns=FEATURE_COLUMNS.copy(),
+        feature_columns=feature_columns.copy(),
     )
 
 

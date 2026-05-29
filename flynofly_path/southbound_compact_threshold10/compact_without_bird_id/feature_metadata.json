@@ -1,0 +1,20 @@
+{
+  "variant": "compact_without_bird_id",
+  "use_bird_id": false,
+  "feature_columns": [
+    "lat_median",
+    "lon_median",
+    "delta_lat",
+    "delta_lon",
+    "step_length_km",
+    "heading_sin",
+    "heading_cos",
+    "doy_sin",
+    "doy_cos",
+    "stopover_duration_days"
+  ],
+  "n_features": 10,
+  "group_column": "path_id",
+  "identity_column": "source_individual_local_identifier",
+  "target_scope": "all Jun-Dec target days inside selected southbound paths"
+}

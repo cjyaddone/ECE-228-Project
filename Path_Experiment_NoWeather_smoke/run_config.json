@@ -1,0 +1,72 @@
+{
+  "seed": 42,
+  "matrix": "smoke",
+  "max_epochs": 1,
+  "patience": 1,
+  "batch_size": 128,
+  "optimizer": "AdamW",
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "scheduler": "ReduceLROnPlateau(factor=0.5, patience=4)",
+  "early_stopping_patience": 1,
+  "triline_loss_weights": {
+    "fly": 1.0,
+    "distance": 1.0,
+    "direction": 0.5
+  },
+  "device": "cpu",
+  "model_specs": [
+    {
+      "name": "direct_transformer_2l_k7",
+      "kind": "direct_transformer",
+      "k": 7,
+      "n_layers": 2
+    },
+    {
+      "name": "direct_mlp_last_day_k1",
+      "kind": "direct_mlp_last",
+      "k": 1
+    },
+    {
+      "name": "direct_mlp_sequence_k30",
+      "kind": "direct_mlp_sequence",
+      "k": 30
+    },
+    {
+      "name": "triline_transformer_2l_k7",
+      "kind": "triline_transformer",
+      "k": 7,
+      "n_layers": 2
+    },
+    {
+      "name": "triline_transformer_3l_k30",
+      "kind": "triline_transformer",
+      "k": 30,
+      "n_layers": 3
+    },
+    {
+      "name": "triline_transformer_4l_k30",
+      "kind": "triline_transformer",
+      "k": 30,
+      "n_layers": 4
+    },
+    {
+      "name": "triline_lstm_2l_k7",
+      "kind": "triline_lstm",
+      "k": 7,
+      "n_layers": 2
+    },
+    {
+      "name": "triline_linear_ar_full_k7",
+      "kind": "triline_linear_ar",
+      "k": 7,
+      "feature_mode": "full"
+    },
+    {
+      "name": "triline_linear_ar_delta_k30",
+      "kind": "triline_linear_ar",
+      "k": 30,
+      "feature_mode": "delta"
+    }
+  ]
+}

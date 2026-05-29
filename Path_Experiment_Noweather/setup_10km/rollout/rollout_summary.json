@@ -1,0 +1,17 @@
+{
+  "setup": "setup_10km",
+  "path_id": "Europa_DER_A1A26_eobs_4004__2021__southbound_01",
+  "selection_rule": "strict_test_path",
+  "context_days": 30,
+  "rollout_steps": 60,
+  "direct_model": "direct_mlp_last_day_k1",
+  "direct_k": 1,
+  "triline_model": "triline_lstm_2l_k7",
+  "triline_k": 7,
+  "direct_mean_rollout_error_km": 975.4727551906132,
+  "direct_final_rollout_error_km": 1395.3241920561647,
+  "triline_mean_rollout_error_km": 172.8513705734343,
+  "triline_final_rollout_error_km": 169.46314480821653,
+  "csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\Path_Experiment_NoWeather\\setup_10km\\rollout\\rollout_predictions.csv",
+  "svg": "D:\\UCSD\\ECE 228\\ECE-228-Project\\Path_Experiment_NoWeather\\setup_10km\\rollout\\rollout_plot.svg"
+}
