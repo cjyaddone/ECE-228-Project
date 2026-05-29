@@ -1,0 +1,11 @@
+{
+  "input_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\data\\dataset2_daily_movement.csv",
+  "output_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\data\\filtered\\dataset2_daily_movement_lat30_50_birds100_all_month_context.csv",
+  "original_rows": 34421,
+  "original_birds": 92,
+  "eligible_birds_min_100_records": 46,
+  "context_rows_lat30_50_all_months": 29977,
+  "context_birds": 46,
+  "sep_dec_target_candidate_rows": 10307,
+  "sep_dec_target_fly_rate_threshold_30km": 0.07393033860483167
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bird Migration Path Explorer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <div class="title-block">
+          <p class="eyebrow">Dataset 2</p>
+          <h1>Bird Migration Path Explorer</h1>
+        </div>
+
+        <label class="field">
+          <span>Bird</span>
+          <select id="birdSelect" disabled>
+            <option>Loading birds...</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Flyday threshold (km/day)</span>
+          <input id="thresholdInput" type="number" min="0" max="500" step="5" value="30" />
+        </label>
+
+        <div class="stats-grid" aria-label="Bird summary">
+          <section class="stat">
+            <span>Start</span>
+            <strong id="startDate">--</strong>
+          </section>
+          <section class="stat">
+            <span>End</span>
+            <strong id="endDate">--</strong>
+          </section>
+          <section class="stat">
+            <span>Distance</span>
+            <strong id="distanceTravelled">--</strong>
+          </section>
+          <section class="stat">
+            <span>Flydays</span>
+            <strong id="flydays">--</strong>
+          </section>
+          <section class="stat">
+            <span>Days tracked</span>
+            <strong id="daysTracked">--</strong>
+          </section>
+          <section class="stat">
+            <span>Records</span>
+            <strong id="recordCount">--</strong>
+          </section>
+        </div>
+
+        <section class="details-panel">
+          <h2 id="selectedBirdName">Select a bird</h2>
+          <dl>
+            <div>
+              <dt>Latitude range</dt>
+              <dd id="latRange">--</dd>
+            </div>
+            <div>
+              <dt>Longitude range</dt>
+              <dd id="lonRange">--</dd>
+            </div>
+            <div>
+              <dt>Longest daily move</dt>
+              <dd id="longestMove">--</dd>
+            </div>
+          </dl>
+        </section>
+      </aside>
+
+      <section class="map-panel">
+        <header class="map-toolbar">
+          <div>
+            <p class="eyebrow">GPS grid</p>
+            <h2 id="mapTitle">Migration path</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button id="fitBirdButton" type="button" class="icon-button" title="Fit selected bird">Fit Bird</button>
+            <button id="fitAllButton" type="button" class="icon-button" title="Fit full dataset">Fit All</button>
+          </div>
+        </header>
+
+        <div class="plot-wrap">
+          <svg id="migrationPlot" role="img" aria-label="Selected bird migration path on a GPS latitude and longitude grid"></svg>
+          <div id="tooltip" class="tooltip" hidden></div>
+        </div>
+
+        <footer class="legend-row" aria-label="Color legend">
+          <span>Earlier</span>
+          <div class="color-ramp"></div>
+          <span>Later</span>
+        </footer>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

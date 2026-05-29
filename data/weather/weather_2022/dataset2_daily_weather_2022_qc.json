@@ -1,0 +1,38 @@
+{
+  "year": 2022,
+  "qc": {
+    "gps_rows": 92819,
+    "missing_weather_values": {
+      "temp_2m_celsius": 0,
+      "wind_speed_10m": 0,
+      "wind_direction_10m": 0,
+      "surface_pressure_hpa": 0,
+      "mean_sea_level_pressure_hpa": 0,
+      "precipitation_mm": 0,
+      "cloud_cover": 0,
+      "boundary_layer_height": 0
+    },
+    "mean_grid_distance_km": 11.417794335691067,
+    "max_grid_distance_km": 17.73095559442656,
+    "rows_grid_distance_gt_50km": 0,
+    "rows_time_diff_gt_1h": 0
+  },
+  "validation": {
+    "file": "/Users/caixinyan/Desktop/Bird Migration/era5_stork_weather/cleaned_data/yearly_weather/dataset2_daily_weather_2022.csv",
+    "size_mb": 0.231,
+    "row_count": 1013,
+    "date_min": "2022-01-01",
+    "date_max": "2022-12-31",
+    "unique_birds": 4,
+    "weather_feature_columns_present": [
+      "temp_2m_celsius",
+      "wind_speed_10m",
+      "wind_direction_10m",
+      "surface_pressure_hpa",
+      "mean_sea_level_pressure_hpa",
+      "precipitation_mm",
+      "cloud_cover",
+      "boundary_layer_height"
+    ]
+  }
+}
