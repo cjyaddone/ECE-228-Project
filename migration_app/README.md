@@ -4,6 +4,10 @@ Interactive browser app for visualizing bird migration paths from:
 
 `data/filtered/dataset2_daily_movement_lat30_50_birds100_all_month_context.csv`
 
+It also includes a southbound-path version for:
+
+`data/filtered/dataset2_southbound_paths_jun_dec_lat30_50_min50_drop5.csv`
+
 ## Run the App
 
 From the project root:
@@ -16,6 +20,12 @@ Open this URL in a browser:
 
 ```text
 http://127.0.0.1:8765/migration_app/index.html
+```
+
+For the southbound-path version, open:
+
+```text
+http://127.0.0.1:8765/migration_app/southbound.html
 ```
 
 The app should be served from the project root so it can load the CSV using the relative path.
@@ -55,5 +65,6 @@ For the selected bird, the sidebar shows:
 ## Files
 
 - `index.html`: app layout.
+- `southbound.html`: app layout for southbound path records grouped by `path_id`.
 - `styles.css`: visual styling.
 - `app.js`: CSV loading, summary calculations, and SVG path rendering.

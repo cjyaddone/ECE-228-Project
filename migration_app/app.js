@@ -1,4 +1,11 @@
-const CSV_PATH = "../data/filtered/dataset2_daily_movement_lat30_50_birds100_all_month_context.csv";
+const APP_CONFIG = {
+  csvPath: "../data/filtered/dataset2_daily_movement_lat30_50_birds100_all_month_context.csv",
+  groupKey: "bird",
+  selectLabel: "records",
+  titlePrefix: "",
+  ...(window.MIGRATION_APP_CONFIG || {}),
+};
+const CSV_PATH = APP_CONFIG.csvPath;
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const state = {
@@ -87,6 +94,13 @@ function parseCsv(text) {
 function toRecord(row) {
   return {
     bird: row.individual_local_identifier,
+    sourceBird: row.source_individual_local_identifier || row.individual_local_identifier,
+    pathId: row.path_id || "",
+    pathYear: row.path_year || row.year || "",
+    pathCopyIndex: row.path_copy_index || "",
+    corridorRows: Number(row.corridor_rows) || 0,
+    pathRows: Number(row.path_rows) || 0,
+    latDropDeg: Number(row.lat_drop_deg) || 0,
     date: row.date.slice(0, 10),
     lat: Number(row.lat_median),
     lon: Number(row.lon_median),
@@ -102,10 +116,11 @@ function toRecord(row) {
 function groupBirds(rows) {
   const birds = new Map();
   rows.forEach((row) => {
-    if (!birds.has(row.bird)) {
-      birds.set(row.bird, []);
+    const key = row[APP_CONFIG.groupKey] || row.bird;
+    if (!birds.has(key)) {
+      birds.set(key, []);
     }
-    birds.get(row.bird).push(row);
+    birds.get(key).push(row);
   });
 
   birds.forEach((birdRows) => {
@@ -360,8 +375,12 @@ function hideTooltip() {
 function updateSummary(rows) {
   const threshold = Number(els.thresholdInput.value) || 30;
   const summary = summarize(rows, threshold);
+  const first = rows[0] || {};
+  const title = APP_CONFIG.titlePrefix
+    ? `${APP_CONFIG.titlePrefix}: ${state.selectedBird}`
+    : state.selectedBird;
   els.selectedBirdName.textContent = state.selectedBird;
-  els.mapTitle.textContent = state.selectedBird;
+  els.mapTitle.textContent = title;
   els.startDate.textContent = summary.start;
   els.endDate.textContent = summary.end;
   els.distanceTravelled.textContent = formatKm(summary.distance);
@@ -370,7 +389,9 @@ function updateSummary(rows) {
   els.recordCount.textContent = numberFormat.format(rows.length);
   els.latRange.textContent = `${formatDegree(summary.lat[0], "lat")} to ${formatDegree(summary.lat[1], "lat")}`;
   els.lonRange.textContent = `${formatDegree(summary.lon[0], "lon")} to ${formatDegree(summary.lon[1], "lon")}`;
-  els.longestMove.textContent = formatKm(summary.longest);
+  els.longestMove.textContent = first.pathId
+    ? `${formatKm(summary.longest)} · ${first.sourceBird} · ${first.pathYear} · ${first.latDropDeg.toFixed(1)}° drop`
+    : formatKm(summary.longest);
 }
 
 function render() {
@@ -387,9 +408,13 @@ function populateBirdSelect() {
 
   els.birdSelect.replaceChildren();
   options.forEach(([bird, rows]) => {
+    const first = rows[0] || {};
     const option = document.createElement("option");
     option.value = bird;
-    option.textContent = `${bird} (${numberFormat.format(rows.length)} records)`;
+    const label = first.pathId
+      ? `${first.sourceBird} · ${first.pathYear} · path ${first.pathCopyIndex || 1}`
+      : bird;
+    option.textContent = `${label} (${numberFormat.format(rows.length)} ${APP_CONFIG.selectLabel})`;
     els.birdSelect.appendChild(option);
   });
 
