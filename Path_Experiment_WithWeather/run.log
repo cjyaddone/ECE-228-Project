@@ -1,0 +1,45 @@
+2026-05-29 18:04:12,358 INFO Using device: cuda
+2026-05-29 18:04:12,360 INFO CUDA device: NVIDIA GeForce RTX 5090
+2026-05-29 18:04:12,575 INFO Running setup_30km with fly threshold 30.0 km
+2026-05-29 18:04:28,677 INFO setup_30km running direct_transformer_2l_k7
+2026-05-29 18:04:35,817 INFO setup_30km running direct_transformer_2l_k14
+2026-05-29 18:04:41,393 INFO setup_30km running direct_transformer_2l_k30
+2026-05-29 18:04:48,111 INFO setup_30km running direct_mlp_last_day_k1
+2026-05-29 18:04:51,996 INFO setup_30km running direct_mlp_sequence_k30
+2026-05-29 18:04:53,822 INFO setup_30km running triline_transformer_2l_k7
+2026-05-29 18:05:04,072 INFO setup_30km running triline_transformer_2l_k14
+2026-05-29 18:05:14,234 INFO setup_30km running triline_transformer_2l_k30
+2026-05-29 18:05:23,255 INFO setup_30km running triline_transformer_3l_k30
+2026-05-29 18:05:33,680 INFO setup_30km running triline_transformer_4l_k7
+2026-05-29 18:05:44,541 INFO setup_30km running triline_transformer_4l_k14
+2026-05-29 18:05:57,523 INFO setup_30km running triline_transformer_4l_k30
+2026-05-29 18:06:06,412 INFO setup_30km running triline_lstm_2l_k7
+2026-05-29 18:06:12,305 INFO setup_30km running triline_lstm_2l_k14
+2026-05-29 18:06:18,617 INFO setup_30km running triline_lstm_2l_k30
+2026-05-29 18:06:23,450 INFO setup_30km running triline_linear_ar_full_k7
+2026-05-29 18:06:28,425 INFO setup_30km running triline_linear_ar_full_k14
+2026-05-29 18:06:32,763 INFO setup_30km running triline_linear_ar_full_k30
+2026-05-29 18:06:36,455 INFO setup_30km running triline_linear_ar_delta_k30
+2026-05-29 18:06:40,481 INFO Running setup_10km with fly threshold 10.0 km
+2026-05-29 18:06:56,733 INFO setup_10km running direct_transformer_2l_k7
+2026-05-29 18:07:02,996 INFO setup_10km running direct_transformer_2l_k14
+2026-05-29 18:07:08,826 INFO setup_10km running direct_transformer_2l_k30
+2026-05-29 18:07:16,458 INFO setup_10km running direct_mlp_last_day_k1
+2026-05-29 18:07:20,735 INFO setup_10km running direct_mlp_sequence_k30
+2026-05-29 18:07:22,546 INFO setup_10km running triline_transformer_2l_k7
+2026-05-29 18:07:33,308 INFO setup_10km running triline_transformer_2l_k14
+2026-05-29 18:07:41,979 INFO setup_10km running triline_transformer_2l_k30
+2026-05-29 18:07:50,064 INFO setup_10km running triline_transformer_3l_k30
+2026-05-29 18:07:58,501 INFO setup_10km running triline_transformer_4l_k7
+2026-05-29 18:08:10,458 INFO setup_10km running triline_transformer_4l_k14
+2026-05-29 18:08:25,855 INFO setup_10km running triline_transformer_4l_k30
+2026-05-29 18:08:35,132 INFO setup_10km running triline_lstm_2l_k7
+2026-05-29 18:08:41,347 INFO setup_10km running triline_lstm_2l_k14
+2026-05-29 18:08:47,647 INFO setup_10km running triline_lstm_2l_k30
+2026-05-29 18:08:53,045 INFO setup_10km running triline_linear_ar_full_k7
+2026-05-29 18:08:58,619 INFO setup_10km running triline_linear_ar_full_k14
+2026-05-29 18:09:03,194 INFO setup_10km running triline_linear_ar_full_k30
+2026-05-29 18:09:06,686 INFO setup_10km running triline_linear_ar_delta_k30
+2026-05-29 18:09:13,943 INFO setup_30km rolling out 20 test paths
+2026-05-29 18:09:21,363 INFO setup_10km rolling out 20 test paths
+2026-05-29 18:09:25,120 INFO All-path rollout explorer saved to D:\UCSD\ECE 228\ECE-228-Project\Path_Experiment_WithWeather\rollout_all
