@@ -1,0 +1,20 @@
+{
+  "setup_fly_threshold_km": 10.0,
+  "model": "const_velocity",
+  "model_family": "baseline",
+  "kind": "const_velocity",
+  "k": 30,
+  "params": 0,
+  "best_epoch": null,
+  "train_samples": 4328,
+  "test_samples": 1082,
+  "test_fly_rate": 0.15711645781993866,
+  "mean_error_km": 19.54231281414791,
+  "median_error_km": 2.28170494968953,
+  "p90_error_km": 61.88703872289553,
+  "p95_error_km": 120.56582928182819,
+  "stationary_error_mean_km": 5.875701240533331,
+  "fly_error_mean_km": 92.8596643149508,
+  "migration50_error_mean_km": 119.9864140083335,
+  "migration100_error_mean_km": 141.64378290818016
+}

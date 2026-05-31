@@ -1,0 +1,14 @@
+{
+  "rows": 4074,
+  "paths": 40,
+  "skipped_paths": 0,
+  "lat_domain": [
+    30.0,
+    55.0
+  ],
+  "min_observed_days": 30,
+  "min_observed_displacement_km": 50.0,
+  "html": "D:\\UCSD\\ECE 228\\ECE-228-Project\\DistanceWeightTuneV2\\rollout_all\\index.html",
+  "predictions_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\DistanceWeightTuneV2\\rollout_all\\rollout_all_predictions.csv",
+  "summary_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\DistanceWeightTuneV2\\rollout_all\\rollout_all_summary.csv"
+}

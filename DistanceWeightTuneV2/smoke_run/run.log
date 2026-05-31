@@ -1,0 +1,12 @@
+2026-05-30 19:45:01,657 INFO Using device: cpu
+2026-05-30 19:45:01,880 INFO Running setup_30km with fly threshold 30.0 km
+2026-05-30 19:45:10,010 INFO setup_30km running direct_transformer_2l_k7
+2026-05-30 19:45:12,000 INFO setup_30km running triline_lstm_2l_k7__mild_bins
+2026-05-30 19:45:13,314 INFO setup_30km running triline_transformer_2l_k7__distance_only
+2026-05-30 19:45:15,211 INFO Running setup_10km with fly threshold 10.0 km
+2026-05-30 19:45:23,477 INFO setup_10km running direct_transformer_2l_k7
+2026-05-30 19:45:24,593 INFO setup_10km running triline_lstm_2l_k7__mild_bins
+2026-05-30 19:45:25,921 INFO setup_10km running triline_transformer_2l_k7__distance_only
+2026-05-30 19:45:31,381 INFO setup_30km rolling out 20 test paths
+2026-05-30 19:45:54,661 INFO setup_10km rolling out 20 test paths
+2026-05-30 19:46:14,400 INFO All-path rollout explorer saved to D:\UCSD\ECE 228\ECE-228-Project\DistanceWeightTuneV2\smoke_run\rollout_all

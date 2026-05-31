@@ -1,0 +1,26 @@
+{
+  "input_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\data\\dataset3_daily_movement.csv",
+  "output_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\data\\filtered\\dataset3_southbound_paths_jun_dec_lat30_50_min50_drop5.csv",
+  "summary_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\data\\filtered\\dataset3_southbound_paths_jun_dec_lat30_50_min50_drop5_summary.csv",
+  "original_rows": 23385,
+  "original_birds": 67,
+  "corridor_rows": 14294,
+  "corridor_birds": 67,
+  "corridor_bird_years": 106,
+  "candidate_bird_years_min_corridor_rows": 98,
+  "output_rows": 5370,
+  "output_paths": 53,
+  "output_source_birds": 38,
+  "start_month": 6,
+  "end_month": 12,
+  "min_lat": 30.0,
+  "max_lat": 50.0,
+  "min_corridor_rows": 50,
+  "min_path_rows": 50,
+  "min_lat_drop": 5.0,
+  "rejected_counts": {
+    "too_few_corridor_rows": 8,
+    "no_later_south_anchor": 0,
+    "insufficient_drop_or_path_rows": 45
+  }
+}

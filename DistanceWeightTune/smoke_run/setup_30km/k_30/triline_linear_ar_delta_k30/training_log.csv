@@ -1,0 +1,2 @@
+epoch,train_loss,train_fly_loss,train_distance_loss,train_direction_loss,train_unweighted_distance_loss,train_unweighted_direction_loss,train_unweighted_total_loss,train_mean_distance_weight,test_loss,test_unweighted_loss,fixed_0_5_fly_f1,fixed_0_5_fly_precision,fixed_0_5_fly_recall,lr
+1,7.1217381231445485,1.0565220639798205,5.789240223643079,0.5519517113122394,2.6104945290331036,0.6018465470915141,3.9679398836357977,1.7021719032206508,3.4881460274433693,3.958301177527239,0.4676616915422885,0.3321554770318021,0.7899159663865546,0.001

@@ -1,0 +1,20 @@
+{
+  "setup_fly_threshold_km": 30.0,
+  "model": "persistence",
+  "model_family": "baseline",
+  "kind": "persistence",
+  "k": 7,
+  "params": 0,
+  "best_epoch": null,
+  "train_samples": 5936,
+  "test_samples": 1484,
+  "test_fly_rate": 0.10242587327957153,
+  "mean_error_km": 14.923289710207357,
+  "median_error_km": 0.7386321611583204,
+  "p90_error_km": 33.240053740375686,
+  "p95_error_km": 104.3792604099195,
+  "stationary_error_mean_km": 2.3544520636361694,
+  "fly_error_mean_km": 125.0659985604233,
+  "migration50_error_mean_km": 143.19965037479795,
+  "migration100_error_mean_km": 184.70182581939795
+}

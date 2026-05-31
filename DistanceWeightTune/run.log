@@ -1,0 +1,5 @@
+2026-05-30 12:49:50,062 INFO Using device: cuda
+2026-05-30 12:49:50,064 INFO CUDA device: NVIDIA GeForce RTX 5090
+2026-05-30 12:49:53,769 INFO setup_30km rolling out 20 test paths
+2026-05-30 12:50:30,052 INFO setup_10km rolling out 20 test paths
+2026-05-30 12:51:06,279 INFO All-path rollout explorer saved to D:\UCSD\ECE 228\ECE-228-Project\DistanceWeightTune\rollout_all

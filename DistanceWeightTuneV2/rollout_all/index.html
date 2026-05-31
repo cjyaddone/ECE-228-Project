@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DistanceWeightTune V2 Rollout Explorer</title>
+    <link rel="stylesheet" href="rollout_styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <div class="title-block">
+          <p class="eyebrow">DistanceWeightTune V2</p>
+          <h1>Rollout Explorer</h1>
+        </div>
+
+        <label class="field">
+          <span>Setup</span>
+          <select id="setupSelect"></select>
+        </label>
+
+        <label class="field">
+          <span>Test path</span>
+          <select id="pathSelect"></select>
+        </label>
+
+        <div class="toggle-grid" aria-label="Visible series">
+          <label><input id="showObserved" type="checkbox" checked /> Observed</label>
+          <label><input id="showTruth" type="checkbox" checked /> Truth</label>
+          <label><input id="showDirect" type="checkbox" checked /> Direct</label>
+          <label><input id="showLstm" type="checkbox" checked /> LSTM</label>
+          <label><input id="showTransformer" type="checkbox" checked /> Transformer</label>
+          <label><input id="showPredictedPoints" type="checkbox" /> Predicted points</label>
+          <label><input id="showPersistence" type="checkbox" /> Persistence</label>
+          <label><input id="showVelocity" type="checkbox" /> Velocity</label>
+        </div>
+
+        <div class="stats-grid" aria-label="Rollout summary">
+          <section class="stat">
+            <span>Observed</span>
+            <strong id="observedDays">--</strong>
+          </section>
+          <section class="stat">
+            <span>Rollout</span>
+            <strong id="rolloutDays">--</strong>
+          </section>
+          <section class="stat">
+            <span>Direct mean</span>
+            <strong id="directMean">--</strong>
+          </section>
+          <section class="stat">
+            <span>LSTM mean</span>
+            <strong id="lstmMean">--</strong>
+          </section>
+          <section class="stat">
+            <span>Direct final</span>
+            <strong id="directFinal">--</strong>
+          </section>
+          <section class="stat">
+            <span>LSTM final</span>
+            <strong id="lstmFinal">--</strong>
+          </section>
+          <section class="stat">
+            <span>Transformer mean</span>
+            <strong id="transformerMean">--</strong>
+          </section>
+          <section class="stat">
+            <span>Transformer final</span>
+            <strong id="transformerFinal">--</strong>
+          </section>
+        </div>
+
+        <section class="details-panel">
+          <h2 id="selectedPathName">Select a path</h2>
+          <dl>
+            <div>
+              <dt>Source bird</dt>
+              <dd id="sourceBird">--</dd>
+            </div>
+            <div>
+              <dt>Date range</dt>
+              <dd id="dateRange">--</dd>
+            </div>
+            <div>
+              <dt>Observed displacement</dt>
+              <dd id="observedDistance">--</dd>
+            </div>
+            <div>
+              <dt>Models</dt>
+              <dd id="modelNames">--</dd>
+            </div>
+          </dl>
+        </section>
+      </aside>
+
+      <section class="map-panel">
+        <header class="map-toolbar">
+          <div>
+            <p class="eyebrow">GPS grid: latitude 55 to 30</p>
+            <h2 id="mapTitle">Autoregressive rollout</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button id="fitPathButton" type="button" class="icon-button" title="Fit selected path longitude">Fit Path</button>
+            <button id="fitAllButton" type="button" class="icon-button" title="Fit all rollout longitudes">Fit All</button>
+          </div>
+        </header>
+
+        <div class="plot-wrap">
+          <svg id="rolloutPlot" role="img" aria-label="Autoregressive rollout on a GPS grid"></svg>
+          <div id="tooltip" class="tooltip" hidden></div>
+        </div>
+
+        <footer class="legend-row" aria-label="Color legend">
+          <span class="legend-swatch observed"></span><span>Observed context</span>
+          <span class="legend-swatch truth"></span><span>Ground truth</span>
+          <span class="legend-swatch direct"></span><span>Direct</span>
+          <span class="legend-swatch lstm"></span><span>LSTM</span>
+          <span class="legend-swatch transformer"></span><span>Transformer</span>
+        </footer>
+      </section>
+    </main>
+    <script src="rollout_data.js"></script>
+    <script src="rollout_app.js"></script>
+  </body>
+</html>

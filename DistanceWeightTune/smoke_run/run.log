@@ -1,0 +1,24 @@
+2026-05-30 12:08:43,173 INFO Using device: cpu
+2026-05-30 12:08:43,603 INFO Running setup_30km with fly threshold 30.0 km
+2026-05-30 12:09:04,588 INFO setup_30km running direct_transformer_2l_k7
+2026-05-30 12:09:07,579 INFO setup_30km running direct_mlp_last_day_k1
+2026-05-30 12:09:07,790 INFO setup_30km running direct_mlp_sequence_k30
+2026-05-30 12:09:07,943 INFO setup_30km running triline_transformer_2l_k7
+2026-05-30 12:09:09,805 INFO setup_30km running triline_transformer_3l_k30
+2026-05-30 12:09:14,567 INFO setup_30km running triline_transformer_4l_k30
+2026-05-30 12:09:20,656 INFO setup_30km running triline_lstm_2l_k7
+2026-05-30 12:09:21,904 INFO setup_30km running triline_linear_ar_full_k7
+2026-05-30 12:09:22,633 INFO setup_30km running triline_linear_ar_delta_k30
+2026-05-30 12:09:23,268 INFO Running setup_10km with fly threshold 10.0 km
+2026-05-30 12:09:44,831 INFO setup_10km running direct_transformer_2l_k7
+2026-05-30 12:09:46,077 INFO setup_10km running direct_mlp_last_day_k1
+2026-05-30 12:09:46,263 INFO setup_10km running direct_mlp_sequence_k30
+2026-05-30 12:09:46,426 INFO setup_10km running triline_transformer_2l_k7
+2026-05-30 12:09:48,218 INFO setup_10km running triline_transformer_3l_k30
+2026-05-30 12:09:52,873 INFO setup_10km running triline_transformer_4l_k30
+2026-05-30 12:09:58,755 INFO setup_10km running triline_lstm_2l_k7
+2026-05-30 12:09:59,918 INFO setup_10km running triline_linear_ar_full_k7
+2026-05-30 12:10:00,687 INFO setup_10km running triline_linear_ar_delta_k30
+2026-05-30 12:10:07,385 INFO setup_30km rolling out 20 test paths
+2026-05-30 12:10:17,001 INFO setup_10km rolling out 20 test paths
+2026-05-30 12:10:21,006 INFO All-path rollout explorer saved to D:\UCSD\ECE 228\ECE-228-Project\DistanceWeightTune\smoke_run\rollout_all

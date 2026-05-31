@@ -52,6 +52,30 @@ select {
   gap: 6px;
 }
 
+.view-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.view-links a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 7px 9px;
+  text-decoration: none;
+}
+
+.view-links a:hover,
+.view-links a[aria-current="page"] {
+  border-color: rgba(15, 118, 110, 0.55);
+  color: var(--accent);
+}
+
 .eyebrow {
   margin: 0;
   color: var(--accent);

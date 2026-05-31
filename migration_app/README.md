@@ -8,6 +8,10 @@ It also includes a southbound-path version for:
 
 `data/filtered/dataset2_southbound_paths_jun_dec_lat30_50_min50_drop5.csv`
 
+And a Dataset 3 southbound-path version for:
+
+`data/filtered/dataset3_southbound_paths_jun_dec_lat30_50_min50_drop5.csv`
+
 ## Run the App
 
 From the project root:
@@ -26,6 +30,12 @@ For the southbound-path version, open:
 
 ```text
 http://127.0.0.1:8765/migration_app/southbound.html
+```
+
+For the Dataset 3 southbound-path version, open:
+
+```text
+http://127.0.0.1:8765/migration_app/southbound-dataset3.html
 ```
 
 The app should be served from the project root so it can load the CSV using the relative path.
@@ -66,5 +76,6 @@ For the selected bird, the sidebar shows:
 
 - `index.html`: app layout.
 - `southbound.html`: app layout for southbound path records grouped by `path_id`.
+- `southbound-dataset3.html`: app layout for Dataset 3 southbound path records grouped by `path_id`.
 - `styles.css`: visual styling.
 - `app.js`: CSV loading, summary calculations, and SVG path rendering.
