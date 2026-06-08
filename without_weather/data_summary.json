@@ -1,0 +1,25 @@
+{
+  "rows": 13550,
+  "paths": 135,
+  "source_birds": 71,
+  "date_min": "2013-07-30 00:00:00+00:00",
+  "date_max": "2023-12-26 00:00:00+00:00",
+  "feature_columns": [
+    "lat_median",
+    "lon_median",
+    "delta_lat",
+    "delta_lon",
+    "step_length_km",
+    "heading_sin",
+    "heading_cos",
+    "doy_sin",
+    "doy_cos",
+    "stopover_duration_days"
+  ],
+  "n_features": 10,
+  "weather_data": false,
+  "setup": {
+    "name": "fly_threshold_10km",
+    "fly_threshold_km": 10.0
+  }
+}

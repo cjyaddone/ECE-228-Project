@@ -1,0 +1,27 @@
+2026-06-07 17:52:44,023 INFO Using device: cuda
+2026-06-07 17:52:44,722 INFO with_weather: building windows for threshold 10.0 km
+2026-06-07 17:52:55,606 INFO with_weather: training direct_mlp_sequence_k7
+2026-06-07 17:53:02,733 INFO with_weather: training direct_transformer_2l_k7
+2026-06-07 17:53:14,856 INFO with_weather: training triline_lstm_2l_k7
+2026-06-07 17:53:28,887 INFO with_weather: training triline_transformer_2l_k7
+2026-06-07 17:53:49,398 INFO with_weather: training direct_mlp_sequence_k14
+2026-06-07 17:53:55,264 INFO with_weather: training direct_transformer_2l_k14
+2026-06-07 17:54:12,297 INFO with_weather: training triline_lstm_2l_k14
+2026-06-07 17:54:25,392 INFO with_weather: training triline_transformer_2l_k14
+2026-06-07 17:54:47,166 INFO with_weather: training direct_mlp_sequence_k30
+2026-06-07 17:54:50,800 INFO with_weather: training direct_transformer_2l_k30
+2026-06-07 17:55:07,398 INFO with_weather: training triline_lstm_2l_k30
+2026-06-07 17:55:16,797 INFO with_weather: training triline_transformer_2l_k30
+2026-06-07 17:55:31,639 INFO without_weather: building windows for threshold 10.0 km
+2026-06-07 17:55:39,137 INFO without_weather: training direct_mlp_sequence_k7
+2026-06-07 17:55:43,846 INFO without_weather: training direct_transformer_2l_k7
+2026-06-07 17:55:57,221 INFO without_weather: training triline_lstm_2l_k7
+2026-06-07 17:56:09,149 INFO without_weather: training triline_transformer_2l_k7
+2026-06-07 17:56:37,057 INFO without_weather: training direct_mlp_sequence_k14
+2026-06-07 17:56:41,355 INFO without_weather: training direct_transformer_2l_k14
+2026-06-07 17:56:54,017 INFO without_weather: training triline_lstm_2l_k14
+2026-06-07 17:57:06,874 INFO without_weather: training triline_transformer_2l_k14
+2026-06-07 17:57:29,928 INFO without_weather: training direct_mlp_sequence_k30
+2026-06-07 17:57:32,998 INFO without_weather: training direct_transformer_2l_k30
+2026-06-07 17:57:42,853 INFO without_weather: training triline_lstm_2l_k30
+2026-06-07 17:57:52,680 INFO without_weather: training triline_transformer_2l_k30

@@ -1,4 +1,0 @@
-2026-05-29 15:00:26,984 INFO Using device: cpu
-2026-05-29 15:00:29,542 INFO setup_30km rolling out 20 test paths
-2026-05-29 15:00:34,835 INFO setup_10km rolling out 20 test paths
-2026-05-29 15:00:37,261 INFO All-path rollout explorer saved to D:\UCSD\ECE 228\ECE-228-Project\Path_Experiment_Noweather\rollout_all

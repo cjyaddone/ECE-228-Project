@@ -1,58 +1,50 @@
-# ECE 228 Bird Trajectory Project
+# Final Path Experiment
 
-## Path Experiment No Weather
+Clean, reproducible path-prediction experiment workspace.
 
-This repository includes a no-weather southbound path trajectory experiment implemented in:
+## Matrix
 
-- `Triline-Transformer/run_path_experiment_no_weather.py`
+- Tests: `with_weather`, `without_weather`
+- Fly threshold: `10 km` only
+- Context lengths: `k = 7, 14, 30`
+- Models per k:
+  - `direct_mlp_sequence`
+  - `direct_transformer_2l`
+  - `triline_lstm_2l`
+  - `triline_transformer_2l`
 
-The experiment reuses the southbound compact setup conventions:
+The cleaned weather input is copied to:
 
-- Dataset: `data/filtered/dataset2_southbound_paths_jun_dec_lat30_50_min50_drop5.csv`
-- Features: compact 10-feature movement/location/seasonality inputs, with no weather data
-- Grouping: windows stay within `path_id`
-- Identity: source bird ID embedding for neural models
-- Split: chronological 80/20
-- Environment: conda env `torch`
-
-Run smoke validation:
-
-```powershell
-conda run -n torch python Triline-Transformer\run_path_experiment_no_weather.py --smoke --output-dir Path_Experiment_NoWeather_smoke
+```text
+Final_Path_Experiment/data/combined_southbound_paths_with_weather_matched.csv
 ```
 
-Run the full matrix:
+## Run
+
+Smoke test:
 
 ```powershell
-conda run -n torch python Triline-Transformer\run_path_experiment_no_weather.py --matrix full --output-dir Path_Experiment_NoWeather
+python Final_Path_Experiment/scripts/run_final_path_experiment.py --mode smoke --device cpu
 ```
 
-## Analysis
+Full run:
 
-The completed full run is saved in `Path_Experiment_NoWeather/`.
+```powershell
+python Final_Path_Experiment/scripts/run_final_path_experiment.py --mode full --device auto --max-epochs 100 --patience 20
+```
 
-Key output files:
+## Outputs
 
-- `Path_Experiment_NoWeather/analysis.md`
-- `Path_Experiment_NoWeather/comparison_summary.csv`
-- `Path_Experiment_NoWeather/baseline_summary.csv`
-- `Path_Experiment_NoWeather/direct_summary.csv`
-- `Path_Experiment_NoWeather/triline_summary.csv`
+Each test writes:
 
-The full matrix produced 68 result rows, with matching per-run `metrics.json`, `predictions.csv`, and `training_log.csv` artifacts.
+- `comparison_summary.csv`
+- `direct_summary.csv`
+- `triline_summary.csv`
+- `run_config.json`
+- `analysis.md`
 
-Best mean GPS error in both threshold setups came from the persistence baseline at `k=120`:
+The top-level comparison is:
 
-| Setup | Model | k | Mean km | Median km |
-|---|---|---:|---:|---:|
-| `setup_10km` | persistence | 120 | 2.5204 | 0.1689 |
-| `setup_30km` | persistence | 120 | 2.5204 | 0.1689 |
-
-Best neural results by mean GPS error:
-
-| Setup | Model | k | Mean km | Median km | Fly recall |
-|---|---|---:|---:|---:|---:|
-| `setup_10km` | Triline Transformer 2L | 120 | 3.0921 | 1.0278 | 0.4000 |
-| `setup_30km` | Triline Transformer 2L | 120 | 2.8846 | 0.7350 | 1.0000 |
-
-Interpretation: the long-context `k=120` split is unusually easy for mean GPS error, and even the persistence baseline dominates there. For model comparison, inspect `comparison_summary.csv` alongside sample counts and migration-day metrics, not only the global mean error.
+```text
+Final_Path_Experiment/weather_vs_noweather_comparison.csv
+```

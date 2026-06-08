@@ -1,0 +1,11 @@
+2026-06-07 17:51:54,229 INFO Using device: cpu
+2026-06-07 17:51:54,897 INFO with_weather: building windows for threshold 10.0 km
+2026-06-07 17:51:57,901 INFO with_weather: training direct_mlp_sequence_k7
+2026-06-07 17:51:58,829 INFO with_weather: training direct_transformer_2l_k7
+2026-06-07 17:52:00,522 INFO with_weather: training triline_lstm_2l_k7
+2026-06-07 17:52:01,828 INFO with_weather: training triline_transformer_2l_k7
+2026-06-07 17:52:04,060 INFO without_weather: building windows for threshold 10.0 km
+2026-06-07 17:52:06,880 INFO without_weather: training direct_mlp_sequence_k7
+2026-06-07 17:52:07,105 INFO without_weather: training direct_transformer_2l_k7
+2026-06-07 17:52:08,883 INFO without_weather: training triline_lstm_2l_k7
+2026-06-07 17:52:10,396 INFO without_weather: training triline_transformer_2l_k7

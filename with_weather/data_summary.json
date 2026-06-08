@@ -1,0 +1,33 @@
+{
+  "rows": 13550,
+  "paths": 135,
+  "source_birds": 71,
+  "date_min": "2013-07-30 00:00:00+00:00",
+  "date_max": "2023-12-26 00:00:00+00:00",
+  "feature_columns": [
+    "lat_median",
+    "lon_median",
+    "delta_lat",
+    "delta_lon",
+    "step_length_km",
+    "heading_sin",
+    "heading_cos",
+    "doy_sin",
+    "doy_cos",
+    "stopover_duration_days",
+    "temp_2m_celsius",
+    "wind_speed_10m",
+    "wind_dir_sin",
+    "wind_dir_cos",
+    "surface_pressure_hpa",
+    "precipitation_log1p_mm",
+    "cloud_cover",
+    "boundary_layer_height"
+  ],
+  "n_features": 18,
+  "weather_data": true,
+  "setup": {
+    "name": "fly_threshold_10km",
+    "fly_threshold_km": 10.0
+  }
+}

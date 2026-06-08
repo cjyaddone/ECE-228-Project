@@ -1,0 +1,305 @@
+\documentclass{article}
+
+\IfFileExists{neurips_2026.sty}{
+  \usepackage[preprint]{neurips_2026}
+}{
+  \usepackage[margin=1in]{geometry}
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\plotplaceholder}[2]{
+  \IfFileExists{#1}{
+    \includegraphics[width=#2\linewidth]{#1}
+  }{
+    \fbox{\parbox[c][0.28\textheight][c]{#2\linewidth}{\centering
+      Plot placeholder\\[0.5em]
+      Filename listed in caption.\\[0.5em]
+      Replace with generated error plot.
+    }}
+  }
+}
+
+\title{Weather-Conditioned Deep Learning for Bird Migration Trajectory Forecasting}
+
+\author{
+  Xinyan Cai, Jiayi Chen\\
+  Department of Electrical and Computer Engineering\\
+  University of California, San Diego\\
+  \texttt{\{xic116, jic101\}@ucsd.edu}\\
+  Team 53
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report studies next-day bird trajectory prediction from historical movement records and optional weather covariates. We emphasize two methodological questions: whether a triline decomposed prediction structure improves over direct coordinate regression, and whether a Transformer encoder improves over simpler sequence and feed-forward baselines. Each model is evaluated at input context lengths $k \in \{7,14,30\}$ using GPS prediction error. We also compare feature settings with and without weather data to measure whether aligned environmental covariates improve forecasting accuracy.
+\end{abstract}
+
+\section{Introduction}
+
+Bird migration forecasting is a spatiotemporal sequence prediction problem. Given the previous $k$ daily observations for an individual bird, the goal is to predict the next-day GPS location. This task is challenging because many days contain little movement, while migration days can involve large displacements whose direction and distance depend on recent trajectory history, seasonal timing, and environmental conditions.
+
+This project focuses on three comparisons:
+\begin{enumerate}
+  \item \textbf{Direct vs. Triline:} direct regression predicts the next displacement vector, while the triline model predicts fly/no-fly, movement distance, and heading separately before reconstructing the next location.
+  \item \textbf{Transformer vs. baselines:} a 2-layer Transformer is compared with a 2-layer LSTM and a flattened-window MLP baseline.
+  \item \textbf{Weather vs. no weather:} models trained with weather covariates are compared against models trained only on trajectory and temporal features.
+\end{enumerate}
+
+\section{Data}
+
+\subsection{Dataset}
+
+\todo{Describe the final dataset used in the report: source, filtering rules, date range, number of birds, number of paths, and number of daily observations.}
+
+\begin{table}[H]
+\centering
+\caption{Dataset summary.}
+\label{tab:data_summary}
+\begin{tabular}{lr}
+\toprule
+Field & Value \\
+\midrule
+Daily records & \todo{fill} \\
+Birds & \todo{fill} \\
+Migration paths & \todo{fill} \\
+Date range & \todo{fill} \\
+Train/test split & \todo{fill} \\
+Prediction target & Next-day latitude and longitude \\
+Context lengths & $k = 7, 14, 30$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Features}
+
+The no-weather setting uses trajectory, movement, identity, and time features such as latitude, longitude, displacement, step length, heading, day-of-year encoding, and stopover duration. The weather setting augments these features with aligned environmental covariates such as wind, pressure, precipitation, temperature, or derived tailwind/crosswind variables.
+
+\begin{table}[H]
+\centering
+\caption{Feature groups used by each experiment setting.}
+\label{tab:features}
+\begin{tabular}{lll}
+\toprule
+Feature group & No weather & With weather \\
+\midrule
+Location and movement & Yes & Yes \\
+Temporal encoding & Yes & Yes \\
+Bird identity embedding & Yes & Yes \\
+Weather covariates & No & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Methods}
+
+\subsection{Direct Regression Model}
+
+The direct model treats trajectory prediction as coordinate regression. For each input window, the model encodes the past $k$ daily feature vectors and predicts the next displacement:
+\[
+  \widehat{\Delta \mathbf{x}}_{t+1} =
+  [\widehat{\Delta \mathrm{lat}}_{t+1}, \widehat{\Delta \mathrm{lon}}_{t+1}].
+\]
+The predicted GPS location is reconstructed as
+\[
+  \widehat{\mathbf{x}}_{t+1} = \mathbf{x}_t + \widehat{\Delta \mathbf{x}}_{t+1}.
+\]
+This structure is simple and directly optimized for coordinate error, but it does not expose intermediate movement decisions such as whether the bird flies.
+
+\subsection{Triline Decomposed Model}
+
+The triline model decomposes movement into three interpretable prediction heads:
+\begin{align}
+  \widehat{p}_{fly} &= f_{fly}(\mathbf{h}), \\
+  \widehat{d} &= \exp(f_{dist}(\mathbf{h})) - 1, \\
+  [\widehat{\sin \theta}, \widehat{\cos \theta}] &= f_{dir}(\mathbf{h}).
+\end{align}
+The predicted distance and heading are converted back into latitude and longitude displacement. This design separates the migration decision, movement magnitude, and movement direction. It can also support optional fly/no-fly gating, where predicted distance is set to zero when $\widehat{p}_{fly}$ is below a threshold.
+
+\subsection{Transformer Encoder}
+
+The main model uses a 2-layer Transformer encoder. Each daily feature vector is projected into a hidden dimension, combined with positional information and bird identity embedding, then processed with self-attention:
+\[
+  \mathbf{H} = \mathrm{TransformerEncoder}(\mathbf{z}_{t-k+1}, \ldots, \mathbf{z}_{t}).
+\]
+The final representation is used either by the direct coordinate head or by the triline heads. The Transformer is expected to help when long-range interactions across the input window matter.
+
+\subsection{Baseline Models}
+
+We compare the Transformer against two learned baselines:
+\begin{itemize}
+  \item \textbf{2-layer LSTM:} processes the input sequence recurrently and predicts from the final hidden state.
+  \item \textbf{MLP:} flattens the $k$-day input window and predicts with feed-forward layers.
+\end{itemize}
+Classical baselines such as persistence and constant velocity may also be reported as reference points.
+
+\section{Experimental Setup}
+
+\begin{table}[H]
+\centering
+\caption{Common training configuration.}
+\label{tab:training_config}
+\begin{tabular}{ll}
+\toprule
+Parameter & Value \\
+\midrule
+Context lengths & $k = 7, 14, 30$ \\
+Transformer depth & 2 layers \\
+LSTM depth & 2 layers \\
+Optimizer & AdamW \\
+Learning rate & \todo{fill} \\
+Batch size & \todo{fill} \\
+Early stopping & \todo{fill} \\
+Random seed & \todo{fill} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Metrics}
+
+The primary metric is haversine GPS error in kilometers between predicted and true next-day locations. We report mean error for overall accuracy, median error for typical-day behavior, and optionally P90 or migration-day error to measure difficult large-movement cases.
+
+\section{Results}
+
+\subsection{Comparison 1: Direct vs. Triline}
+
+This comparison isolates the prediction structure. Both methods should use the same encoder family and the same feature setting when possible. The headline question is whether decomposing movement into fly/no-fly, distance, and heading improves GPS error relative to direct coordinate regression.
+
+\begin{table}[H]
+\centering
+\caption{Direct regression vs. triline decomposition across context lengths. Lower GPS error is better.}
+\label{tab:direct_vs_triline}
+\begin{tabular}{lrrrrrr}
+\toprule
+Model & $k$ & Mean km & Median km & P90 km & Migration mean km & Notes \\
+\midrule
+Direct Transformer 2L & 7  & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline Transformer 2L & 7  & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Direct Transformer 2L & 14 & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline Transformer 2L & 14 & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Direct Transformer 2L & 30 & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline Transformer 2L & 30 & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\plotplaceholder{figures/direct_vs_triline_error_by_k.png}{0.92}
+\caption{Direct vs. triline GPS error for $k = 7, 14, 30$. Recommended plot: grouped bar chart or line plot with one line per method and mean GPS error on the y-axis.}
+\label{fig:direct_vs_triline}
+\end{figure}
+
+\subsection{Comparison 2: Transformer vs. LSTM and MLP Baselines}
+
+This comparison isolates the sequence model architecture. Use the triline prediction structure for Transformer and LSTM if the goal is to compare encoders under the same output formulation. Use a flattened-window MLP as the non-sequential learned baseline.
+
+\begin{table}[H]
+\centering
+\caption{2-layer Transformer vs. 2-layer LSTM and MLP baselines across context lengths. Lower GPS error is better.}
+\label{tab:transformer_vs_baselines}
+\begin{tabular}{lrrrrr}
+\toprule
+Model & $k$ & Mean km & Median km & P90 km & Parameters \\
+\midrule
+Triline Transformer 2L & 7  & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline LSTM 2L        & 7  & \todo{} & \todo{} & \todo{} & \todo{} \\
+MLP                    & 7  & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline Transformer 2L & 14 & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline LSTM 2L        & 14 & \todo{} & \todo{} & \todo{} & \todo{} \\
+MLP                    & 14 & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline Transformer 2L & 30 & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline LSTM 2L        & 30 & \todo{} & \todo{} & \todo{} & \todo{} \\
+MLP                    & 30 & \todo{} & \todo{} & \todo{} & \todo{} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\plotplaceholder{figures/transformer_vs_baselines_error_by_k.png}{0.92}
+\caption{Transformer vs. LSTM and MLP error across $k = 7, 14, 30$. Recommended plot: grouped bar chart with one group per $k$ and one bar per architecture.}
+\label{fig:transformer_vs_baselines}
+\end{figure}
+
+\subsection{Comparison 3: With Weather vs. Without Weather}
+
+This comparison measures the value of environmental covariates. Use the same model class, output structure, context length, split protocol, and evaluation metric in both settings. If possible, report both mean GPS error and migration-day error, since weather may be more informative on large flight days than on stationary days.
+
+\begin{table}[H]
+\centering
+\caption{Weather ablation across context lengths. Lower GPS error is better.}
+\label{tab:weather_ablation}
+\begin{tabular}{lrrrrrr}
+\toprule
+Model & $k$ & No-weather mean & Weather mean & Delta & No-weather median & Weather median \\
+\midrule
+Triline Transformer 2L & 7  & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline Transformer 2L & 14 & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline Transformer 2L & 30 & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline LSTM 2L        & 7  & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline LSTM 2L        & 14 & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+Triline LSTM 2L        & 30 & \todo{} & \todo{} & \todo{} & \todo{} & \todo{} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\plotplaceholder{figures/weather_ablation_error_by_k.png}{0.92}
+\caption{With-weather vs. no-weather GPS error across $k = 7, 14, 30$. Recommended plot: paired bars for each model and context length, or separate line plots for no-weather and weather settings.}
+\label{fig:weather_ablation}
+\end{figure}
+
+\section{Discussion}
+
+\subsection{Direct vs. Triline}
+
+\todo{Summarize whether triline improves mean, median, or migration-day error. Discuss whether the fly/no-fly head improves interpretability or enables useful gating. Also mention cases where direct regression performs better, especially on large movement days if observed.}
+
+\subsection{Transformer vs. Baselines}
+
+\todo{Discuss whether self-attention improves over the 2-layer LSTM and MLP. If gains are small, explain that recent movement features or dataset size may dominate architecture choice.}
+
+\subsection{Effect of Weather}
+
+\todo{Discuss whether weather features improve error. If weather does not improve results, consider possible reasons: noisy joins, weather variables not aligned with departure decisions, insufficient capacity, or train/test distribution shift.}
+
+\section{Conclusion}
+
+\todo{State the final empirical takeaways in 3--5 sentences. Explicitly answer: (1) direct or triline, (2) Transformer or baseline, and (3) weather or no weather.}
+
+\section*{Reproducibility Checklist}
+
+\begin{table}[H]
+\centering
+\caption{Artifacts to report for reproducibility.}
+\label{tab:reproducibility}
+\begin{tabular}{ll}
+\toprule
+Item & Location or value \\
+\midrule
+Dataset path & \todo{fill} \\
+Training script & \todo{fill} \\
+Result CSV files & \todo{fill} \\
+Figure folder & \texttt{figures/} \\
+Random seed & \todo{fill} \\
+Hardware & \todo{fill} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
