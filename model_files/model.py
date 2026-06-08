@@ -5,11 +5,12 @@ from torch import nn
 
 
 class TrilineTransformer(nn.Module):
-    """Transformer encoder with fly, distance, and heading heads.
+    """Transformer V2 — CLS token, 4 layers, d_model=256, 8 heads.
 
-    Uses learned attention pooling over the encoded sequence so the model
-    can weight recent days more heavily than distant ones, rather than
-    averaging all positions equally.
+    Key improvements over the original:
+    - CLS token participates in all encoder layers (not post-hoc pooling)
+    - d_model 128 → 256, heads 4 → 8, layers 2 → 4
+    - Deeper output heads (128 → 64 → out instead of 64 → out)
     """
 
     def __init__(
@@ -17,23 +18,24 @@ class TrilineTransformer(nn.Module):
         n_features: int,
         n_birds: int,
         max_k: int,
-        d_model: int = 128,
-        n_heads: int = 4,
-        n_layers: int = 2,
+        d_model: int = 256,
+        n_heads: int = 8,
+        n_layers: int = 4,
         dropout: float = 0.1,
         bird_embedding_dim: int = 2,
-        use_bird_id: bool = True,
+        use_bird_id: bool = False,
     ) -> None:
         super().__init__()
         self.use_bird_id = use_bird_id
+        self.d_model = d_model
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, d_model))
         self.feature_projection = nn.Linear(n_features, d_model)
+        # +1 position for CLS token
+        self.positional_embedding = nn.Parameter(torch.zeros(1, max_k + 1, d_model))
+
         if self.use_bird_id:
             self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
             self.bird_projection = nn.Linear(bird_embedding_dim, d_model)
-        else:
-            self.bird_embedding = None
-            self.bird_projection = None
-        self.positional_embedding = nn.Parameter(torch.zeros(1, max_k, d_model))
 
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=d_model,
@@ -46,45 +48,40 @@ class TrilineTransformer(nn.Module):
         )
         self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=n_layers)
 
-        # Learned attention pooling: each position gets a scalar score,
-        # softmax-normalized across the sequence, then weighted sum.
-        self.pool_attention = nn.Sequential(
-            nn.Linear(d_model, d_model // 4),
-            nn.GELU(),
-            nn.Linear(d_model // 4, 1),
-        )
-
         self.fly_head = self._head(d_model, 1, dropout)
         self.distance_head = self._head(d_model, 1, dropout)
         self.direction_head = self._head(d_model, 2, dropout)
 
-        nn.init.normal_(self.positional_embedding, mean=0.0, std=0.02)
+        nn.init.normal_(self.cls_token, std=0.02)
+        nn.init.normal_(self.positional_embedding, std=0.02)
 
     @staticmethod
     def _head(d_model: int, out_dim: int, dropout: float) -> nn.Sequential:
         return nn.Sequential(
             nn.LayerNorm(d_model),
-            nn.Linear(d_model, 64),
+            nn.Linear(d_model, 128),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(128, 64),
             nn.GELU(),
             nn.Dropout(dropout),
             nn.Linear(64, out_dim),
         )
 
     def forward(self, features: torch.Tensor, bird_ids: torch.Tensor) -> dict[str, torch.Tensor]:
-        seq_len = features.shape[1]
+        B, S, _ = features.shape
         x = self.feature_projection(features)
-        x = x + self.positional_embedding[:, :seq_len, :]
+        cls_tokens = self.cls_token.expand(B, -1, -1)
+        x = torch.cat([cls_tokens, x], dim=1)                     # (B, 1+S, d_model)
+        x = x + self.positional_embedding[:, : S + 1, :]
         if self.use_bird_id:
             x = x + self.bird_projection(self.bird_embedding(bird_ids)).unsqueeze(1)
         encoded = self.encoder(x)
-        # Learned attention pooling over sequence positions
-        attn_scores = self.pool_attention(encoded).squeeze(-1)  # (B, seq_len)
-        attn_weights = torch.softmax(attn_scores, dim=-1)       # (B, seq_len)
-        pooled = (encoded * attn_weights.unsqueeze(-1)).sum(dim=1)
+        cls_out = encoded[:, 0, :]                                 # CLS token output
         return {
-            "fly_logit": self.fly_head(pooled).squeeze(-1),
-            "log_distance": self.distance_head(pooled).squeeze(-1),
-            "direction": self.direction_head(pooled),
+            "fly_logit": self.fly_head(cls_out).squeeze(-1),
+            "log_distance": self.distance_head(cls_out).squeeze(-1),
+            "direction": self.direction_head(cls_out),
         }
 
 

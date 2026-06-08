@@ -1,7 +1,7 @@
 {
   "mode": "full",
   "with_weather": {
-    "output_dir": "D:\\UCSD\\ECE 228\\ECE-228-Project\\Final_Path_Experiment\\with_weather",
+    "output_dir": "D:\\UCSD\\ECE 228\\Final_Path_Experiment\\with_weather",
     "rows": 12,
     "model_dir_count": 12,
     "expected_model_dir_count": 12,
@@ -17,7 +17,7 @@
     "passed": true
   },
   "without_weather": {
-    "output_dir": "D:\\UCSD\\ECE 228\\ECE-228-Project\\Final_Path_Experiment\\without_weather",
+    "output_dir": "D:\\UCSD\\ECE 228\\Final_Path_Experiment\\without_weather",
     "rows": 12,
     "model_dir_count": 12,
     "expected_model_dir_count": 12,

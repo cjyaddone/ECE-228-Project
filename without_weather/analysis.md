@@ -7,15 +7,15 @@
 
 | Model | Family | k | Mean km | Median km | P90 km | Fly recall |
 |---|---|---:|---:|---:|---:|---:|
-| direct_mlp_sequence_k7 | direct | 7 | 19.4523 | 5.1853 | 61.2415 |  |
-| direct_transformer_2l_k7 | direct | 7 | 17.3626 | 3.2953 | 57.9022 |  |
-| triline_lstm_2l_k7 | triline | 7 | 17.2921 | 2.3225 | 61.0164 | 0.7307 |
-| triline_transformer_2l_k7 | triline | 7 | 17.5027 | 2.7457 | 56.2518 | 0.6855 |
-| direct_mlp_sequence_k14 | direct | 14 | 20.1950 | 5.3072 | 61.1268 |  |
-| direct_transformer_2l_k14 | direct | 14 | 20.0944 | 6.5404 | 59.8188 |  |
-| triline_lstm_2l_k14 | triline | 14 | 18.0981 | 2.3907 | 55.0829 | 0.6563 |
-| triline_transformer_2l_k14 | triline | 14 | 18.0855 | 2.6207 | 59.6721 | 0.7308 |
-| direct_mlp_sequence_k30 | direct | 30 | 19.4097 | 5.8826 | 56.9827 |  |
-| direct_transformer_2l_k30 | direct | 30 | 16.3678 | 3.4552 | 56.2703 |  |
-| triline_lstm_2l_k30 | triline | 30 | 15.9834 | 2.5234 | 45.8842 | 0.6714 |
-| triline_transformer_2l_k30 | triline | 30 | 16.2418 | 2.3073 | 47.5778 | 0.7025 |
+| direct_mlp_sequence_k7 | direct | 7 | 19.2112 | 4.4726 | 62.1823 |  |
+| direct_transformer_4l_k7 | direct | 7 | 17.6510 | 2.4655 | 58.4136 |  |
+| triline_lstm_4l_k7 | triline | 7 | 18.1902 | 2.2640 | 63.0585 | 0.7236 |
+| triline_transformer_v2_k7 | triline | 7 | 18.1774 | 2.5556 | 62.3935 | 0.6957 |
+| direct_mlp_sequence_k14 | direct | 14 | 20.6319 | 5.1427 | 64.6713 |  |
+| direct_transformer_4l_k14 | direct | 14 | 19.1797 | 3.6874 | 62.6445 |  |
+| triline_lstm_4l_k14 | triline | 14 | 18.8507 | 2.4857 | 62.2857 | 0.7313 |
+| triline_transformer_v2_k14 | triline | 14 | 18.6557 | 2.5361 | 56.6631 | 0.7381 |
+| direct_mlp_sequence_k30 | direct | 30 | 20.8360 | 5.7480 | 62.4816 |  |
+| direct_transformer_4l_k30 | direct | 30 | 18.2162 | 4.3492 | 57.9296 |  |
+| triline_lstm_4l_k30 | triline | 30 | 17.0553 | 2.4537 | 49.6591 | 0.7021 |
+| triline_transformer_v2_k30 | triline | 30 | 17.1975 | 2.2739 | 49.3433 | 0.7182 |

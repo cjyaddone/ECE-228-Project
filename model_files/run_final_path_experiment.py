@@ -20,14 +20,11 @@ sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parents[2]
 FINAL_ROOT = ROOT / "Final_Path_Experiment"
-TRILINE_ROOT = ROOT / "Triline-Transformer"
+TRILINE_ROOT = ROOT / "ECE-228-Project" / "model_files"
 CLEANED_WEATHER_SOURCE = (
-    ROOT
-    / "Path_Experiment_DoubleDataset_WithWeather"
-    / "combined_southbound_paths_with_weather_matched.csv"
+    ROOT / "ECE-228-Project" / "data" / "combined_southbound_paths_with_weather_matched.csv"
 )
 CLEANED_WEATHER_COPY = FINAL_ROOT / "data" / "combined_southbound_paths_with_weather_matched.csv"
-PRECIPITATION_CORRECTION_REPORT = FINAL_ROOT / "data" / "precipitation_correction_report.json"
 SETUP_NAME = "fly_threshold_10km"
 FLY_THRESHOLD_KM = 10.0
 K_VALUES = [7, 14, 30]
@@ -58,22 +55,22 @@ def model_specs(smoke: bool) -> list[dict[str, object]]:
                     "k": k,
                 },
                 {
-                    "name": f"direct_transformer_2l_k{k}",
+                    "name": f"direct_transformer_4l_k{k}",
                     "kind": "direct_transformer",
                     "k": k,
-                    "n_layers": 2,
+                    "n_layers": 4,
                 },
                 {
-                    "name": f"triline_lstm_2l_k{k}",
+                    "name": f"triline_lstm_4l_k{k}",
                     "kind": "triline_lstm",
                     "k": k,
-                    "n_layers": 2,
+                    "n_layers": 4,
                 },
                 {
-                    "name": f"triline_transformer_2l_k{k}",
+                    "name": f"triline_transformer_v2_k{k}",
                     "kind": "triline_transformer",
                     "k": k,
-                    "n_layers": 2,
+                    "n_layers": 4,
                 },
             ]
         )
@@ -142,82 +139,18 @@ def copy_inputs_and_sources() -> None:
         shutil.copy2(source, model_files / source.name)
 
 
-def load_dataset2_weather_points() -> pd.DataFrame:
-    frames: list[pd.DataFrame] = []
-    for path in sorted((ROOT / "data" / "weather").glob("weather_*\\dataset2_daily_weather_*.csv")):
-        frame = pd.read_csv(
-            path,
-            usecols=["individual_local_identifier", "date", "n_weather_points"],
-        )
-        frame["weather_bird"] = frame["individual_local_identifier"].astype(str)
-        frame["weather_date_norm"] = pd.to_datetime(
-            frame["date"],
-            utc=True,
-            format="mixed",
-        ).dt.normalize()
-        frame["n_weather_points"] = pd.to_numeric(frame["n_weather_points"], errors="coerce")
-        frames.append(frame[["weather_bird", "weather_date_norm", "n_weather_points"]])
-    if not frames:
-        raise FileNotFoundError("No Dataset 2 daily weather files found under data/weather/weather_*")
-    points = pd.concat(frames, ignore_index=True).dropna(subset=["n_weather_points"])
-    return points.drop_duplicates(["weather_bird", "weather_date_norm"], keep="first")
-
-
 def apply_dataset2_precipitation_fix(df: pd.DataFrame) -> pd.DataFrame:
-    out = df.copy()
-    out["weather_bird"] = out.get("weather_bird", out["source_individual_local_identifier"]).fillna(
-        out["source_individual_local_identifier"]
-    ).astype(str)
-    out["weather_date"] = out.get("weather_date", out["date"]).fillna(out["date"])
-    out["weather_date_norm"] = pd.to_datetime(out["weather_date"], utc=True, format="mixed").dt.normalize()
-    out["weather_file"] = out.get("weather_file", "").fillna("").astype(str)
-    out["precipitation_mm"] = pd.to_numeric(out["precipitation_mm"], errors="coerce").fillna(0.0)
-    out["precipitation_mm_original"] = out["precipitation_mm"]
+    """Ensure precipitation columns are numeric and add log1p transform.
 
-    out = out.merge(
-        load_dataset2_weather_points(),
-        on=["weather_bird", "weather_date_norm"],
-        how="left",
-        validate="many_to_one",
-    )
-    dataset2_mask = out["weather_file"].str.contains("dataset2_daily_weather", case=False, na=False)
-    fix_mask = dataset2_mask & out["n_weather_points"].notna() & (out["n_weather_points"] > 0)
-    out["precipitation_fix_applied"] = fix_mask
-    out["precipitation_fix_formula"] = ""
-    out.loc[fix_mask, "precipitation_fix_formula"] = "precipitation_mm / n_weather_points * 24"
-    out.loc[fix_mask, "precipitation_mm"] = (
-        out.loc[fix_mask, "precipitation_mm_original"] / out.loc[fix_mask, "n_weather_points"] * 24.0
-    )
+    The combined CSV from ``data/combined_southbound_paths_with_weather_matched.csv``
+    already contains correctly-scaled precipitation values so no Dataset-2-specific
+    correction is needed at this point.
+    """
+    out = df.copy()
+    out["precipitation_mm"] = pd.to_numeric(out["precipitation_mm"], errors="coerce").fillna(0.0)
     out["precipitation_mm"] = out["precipitation_mm"].clip(lower=0.0)
     out["precipitation_log1p_mm"] = np.log1p(out["precipitation_mm"])
-
-    report = {
-        "correction": "Dataset 2 precipitation temporary scale fix",
-        "formula": "precipitation_mm_fixed = precipitation_mm / n_weather_points * 24",
-        "note": "Approximation used because Dataset 2 was not regenerated with the Dataset 3 daily ERA5 pipeline.",
-        "rows": int(len(out)),
-        "dataset2_rows_detected": int(dataset2_mask.sum()),
-        "rows_fixed": int(fix_mask.sum()),
-        "rows_missing_n_weather_points": int((dataset2_mask & ~fix_mask).sum()),
-        "dataset3_rows_unchanged": int((~dataset2_mask).sum()),
-        "precipitation_mm_original": {
-            "mean": float(out.loc[fix_mask, "precipitation_mm_original"].mean()) if fix_mask.any() else None,
-            "max": float(out.loc[fix_mask, "precipitation_mm_original"].max()) if fix_mask.any() else None,
-        },
-        "precipitation_mm_fixed": {
-            "mean": float(out.loc[fix_mask, "precipitation_mm"].mean()) if fix_mask.any() else None,
-            "max": float(out.loc[fix_mask, "precipitation_mm"].max()) if fix_mask.any() else None,
-        },
-        "n_weather_points": {
-            "mean": float(out.loc[fix_mask, "n_weather_points"].mean()) if fix_mask.any() else None,
-            "min": float(out.loc[fix_mask, "n_weather_points"].min()) if fix_mask.any() else None,
-            "max": float(out.loc[fix_mask, "n_weather_points"].max()) if fix_mask.any() else None,
-        },
-    }
-    write_json(PRECIPITATION_CORRECTION_REPORT, report)
-    return out.rename(columns={"n_weather_points": "n_weather_points_for_precipitation_fix"}).drop(
-        columns=["weather_date_norm"]
-    )
+    return out
 
 
 def run_one_test(
@@ -344,7 +277,6 @@ def write_run_config(
             "device": str(device),
             "weather_data": weather_data,
             "cleaned_weather_csv": str(CLEANED_WEATHER_COPY),
-            "precipitation_correction_report": str(PRECIPITATION_CORRECTION_REPORT),
             "model_specs": specs,
         },
     )

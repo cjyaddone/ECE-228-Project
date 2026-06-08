@@ -11,12 +11,11 @@
   ],
   "fly_threshold_km": 10.0,
   "setup_name": "fly_threshold_10km",
-  "max_epochs": 100,
-  "patience": 20,
+  "max_epochs": 200,
+  "patience": 30,
   "device": "cuda",
   "weather_data": false,
-  "cleaned_weather_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\Final_Path_Experiment\\data\\combined_southbound_paths_with_weather_matched.csv",
-  "precipitation_correction_report": "D:\\UCSD\\ECE 228\\ECE-228-Project\\Final_Path_Experiment\\data\\precipitation_correction_report.json",
+  "cleaned_weather_csv": "D:\\UCSD\\ECE 228\\Final_Path_Experiment\\data\\combined_southbound_paths_with_weather_matched.csv",
   "model_specs": [
     {
       "name": "direct_mlp_sequence_k7",
@@ -24,22 +23,22 @@
       "k": 7
     },
     {
-      "name": "direct_transformer_2l_k7",
+      "name": "direct_transformer_4l_k7",
       "kind": "direct_transformer",
       "k": 7,
-      "n_layers": 2
+      "n_layers": 4
     },
     {
-      "name": "triline_lstm_2l_k7",
+      "name": "triline_lstm_4l_k7",
       "kind": "triline_lstm",
       "k": 7,
-      "n_layers": 2
+      "n_layers": 4
     },
     {
-      "name": "triline_transformer_2l_k7",
+      "name": "triline_transformer_v2_k7",
       "kind": "triline_transformer",
       "k": 7,
-      "n_layers": 2
+      "n_layers": 4
     },
     {
       "name": "direct_mlp_sequence_k14",
@@ -47,22 +46,22 @@
       "k": 14
     },
     {
-      "name": "direct_transformer_2l_k14",
+      "name": "direct_transformer_4l_k14",
       "kind": "direct_transformer",
       "k": 14,
-      "n_layers": 2
+      "n_layers": 4
     },
     {
-      "name": "triline_lstm_2l_k14",
+      "name": "triline_lstm_4l_k14",
       "kind": "triline_lstm",
       "k": 14,
-      "n_layers": 2
+      "n_layers": 4
     },
     {
-      "name": "triline_transformer_2l_k14",
+      "name": "triline_transformer_v2_k14",
       "kind": "triline_transformer",
       "k": 14,
-      "n_layers": 2
+      "n_layers": 4
     },
     {
       "name": "direct_mlp_sequence_k30",
@@ -70,22 +69,22 @@
       "k": 30
     },
     {
-      "name": "direct_transformer_2l_k30",
+      "name": "direct_transformer_4l_k30",
       "kind": "direct_transformer",
       "k": 30,
-      "n_layers": 2
+      "n_layers": 4
     },
     {
-      "name": "triline_lstm_2l_k30",
+      "name": "triline_lstm_4l_k30",
       "kind": "triline_lstm",
       "k": 30,
-      "n_layers": 2
+      "n_layers": 4
     },
     {
-      "name": "triline_transformer_2l_k30",
+      "name": "triline_transformer_v2_k30",
       "kind": "triline_transformer",
       "k": 30,
-      "n_layers": 2
+      "n_layers": 4
     }
   ]
 }

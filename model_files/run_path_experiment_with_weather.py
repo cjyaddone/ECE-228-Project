@@ -153,14 +153,17 @@ class DirectTransformer(nn.Module):
         max_k: int,
         d_model: int = 128,
         n_heads: int = 4,
-        n_layers: int = 2,
+        n_layers: int = 4,
         dropout: float = 0.1,
         bird_embedding_dim: int = 2,
+        use_bird_id: bool = False,
     ) -> None:
         super().__init__()
+        self.use_bird_id = use_bird_id
         self.feature_projection = nn.Linear(n_features, d_model)
-        self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
-        self.bird_projection = nn.Linear(bird_embedding_dim, d_model)
+        if self.use_bird_id:
+            self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
+            self.bird_projection = nn.Linear(bird_embedding_dim, d_model)
         self.positional_embedding = nn.Parameter(torch.zeros(1, max_k, d_model))
         layer = nn.TransformerEncoderLayer(
             d_model=d_model,
@@ -185,7 +188,8 @@ class DirectTransformer(nn.Module):
         seq_len = features.shape[1]
         x = self.feature_projection(features)
         x = x + self.positional_embedding[:, :seq_len, :]
-        x = x + self.bird_projection(self.bird_embedding(bird_ids)).unsqueeze(1)
+        if self.use_bird_id:
+            x = x + self.bird_projection(self.bird_embedding(bird_ids)).unsqueeze(1)
         encoded = self.encoder(x)
         return self.head(encoded[:, -1, :])
 
@@ -200,13 +204,17 @@ class DirectMLP(nn.Module):
         hidden_dim: int = 128,
         bird_embedding_dim: int = 32,
         dropout: float = 0.1,
+        use_bird_id: bool = False,
     ) -> None:
         super().__init__()
+        self.use_bird_id = use_bird_id
         self.last_day_only = last_day_only
         input_dim = n_features if last_day_only else k * n_features
-        self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
+        mlp_input_dim = input_dim + bird_embedding_dim if use_bird_id else input_dim
+        if use_bird_id:
+            self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
         self.net = nn.Sequential(
-            nn.Linear(input_dim + bird_embedding_dim, hidden_dim),
+            nn.Linear(mlp_input_dim, hidden_dim),
             nn.LayerNorm(hidden_dim),
             nn.GELU(),
             nn.Dropout(dropout),
@@ -221,7 +229,8 @@ class DirectMLP(nn.Module):
             x = features[:, -1, :]
         else:
             x = features.flatten(start_dim=1)
-        x = torch.cat([x, self.bird_embedding(bird_ids)], dim=1)
+        if self.use_bird_id:
+            x = torch.cat([x, self.bird_embedding(bird_ids)], dim=1)
         return self.net(x)
 
 
@@ -230,15 +239,18 @@ class TrilineLSTM(nn.Module):
         self,
         n_features: int,
         n_birds: int,
-        hidden_dim: int = 128,
-        n_layers: int = 2,
+        hidden_dim: int = 256,
+        n_layers: int = 4,
         dropout: float = 0.1,
         bird_embedding_dim: int = 2,
+        use_bird_id: bool = False,
     ) -> None:
         super().__init__()
+        self.use_bird_id = use_bird_id
         self.feature_projection = nn.Linear(n_features, hidden_dim)
-        self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
-        self.bird_projection = nn.Linear(bird_embedding_dim, hidden_dim)
+        if use_bird_id:
+            self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
+            self.bird_projection = nn.Linear(bird_embedding_dim, hidden_dim)
         self.lstm = nn.LSTM(
             input_size=hidden_dim,
             hidden_size=hidden_dim,
@@ -252,7 +264,8 @@ class TrilineLSTM(nn.Module):
 
     def forward(self, features: torch.Tensor, bird_ids: torch.Tensor) -> dict[str, torch.Tensor]:
         x = self.feature_projection(features)
-        x = x + self.bird_projection(self.bird_embedding(bird_ids)).unsqueeze(1)
+        if self.use_bird_id:
+            x = x + self.bird_projection(self.bird_embedding(bird_ids)).unsqueeze(1)
         encoded, _ = self.lstm(x)
         pooled = encoded[:, -1, :]
         return {
@@ -271,11 +284,15 @@ class TrilineLinearAR(nn.Module):
         hidden_dim: int = 128,
         bird_embedding_dim: int = 32,
         dropout: float = 0.1,
+        use_bird_id: bool = False,
     ) -> None:
         super().__init__()
-        self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
+        self.use_bird_id = use_bird_id
+        proj_input_dim = k * n_features + bird_embedding_dim if use_bird_id else k * n_features
+        if use_bird_id:
+            self.bird_embedding = nn.Embedding(n_birds, bird_embedding_dim)
         self.projection = nn.Sequential(
-            nn.Linear(k * n_features + bird_embedding_dim, hidden_dim),
+            nn.Linear(proj_input_dim, hidden_dim),
             nn.LayerNorm(hidden_dim),
             nn.ReLU(),
             nn.Dropout(dropout),
@@ -285,7 +302,10 @@ class TrilineLinearAR(nn.Module):
         self.direction_head = triline_head(hidden_dim, 2, dropout)
 
     def forward(self, features: torch.Tensor, bird_ids: torch.Tensor) -> dict[str, torch.Tensor]:
-        x = torch.cat([features.flatten(start_dim=1), self.bird_embedding(bird_ids)], dim=1)
+        if self.use_bird_id:
+            x = torch.cat([features.flatten(start_dim=1), self.bird_embedding(bird_ids)], dim=1)
+        else:
+            x = features.flatten(start_dim=1)
         rep = self.projection(x)
         return {
             "fly_logit": self.fly_head(rep).squeeze(-1),
@@ -667,11 +687,25 @@ def build_windows(df: pd.DataFrame, k: int, fly_threshold_km: float) -> WindowDa
 
 
 def make_chronological_split(window_data: WindowData, train_fraction: float = 0.8) -> tuple[np.ndarray, np.ndarray]:
-    order = np.argsort(window_data.target_dates, kind="stable")
-    split_idx = int(len(order) * train_fraction)
-    if split_idx <= 0 or split_idx >= len(order):
-        raise ValueError(f"Need enough windows for split, got {len(order)}")
-    return order[:split_idx], order[split_idx:]
+    """Split windows by year groups so each partition contains full annual cycles.
+
+    Windows are grouped by calendar year of ``target_dates``.  The first
+    ``train_fraction`` of unique years go to training, the remainder to test.
+    This avoids the seasonal blindness of a single date cutoff while keeping
+    temporal leakage between splits to a minimum.
+    """
+    dates = pd.DatetimeIndex(window_data.target_dates)
+    years = dates.year.values
+    unique_years = np.unique(years)
+    n_train_years = max(1, int(len(unique_years) * train_fraction))
+    if n_train_years >= len(unique_years):
+        n_train_years = len(unique_years) - 1
+    if n_train_years < 1:
+        raise ValueError(f"Need at least 2 unique years for a split, got {len(unique_years)}")
+    train_mask = np.isin(years, unique_years[:n_train_years])
+    train_idx = np.where(train_mask)[0]
+    test_idx = np.where(~train_mask)[0]
+    return train_idx, test_idx
 
 
 def fit_normalizer(features: np.ndarray, train_idx: Iterable[int]) -> tuple[np.ndarray, np.ndarray]:
@@ -925,6 +959,7 @@ def train_direct_model(
             n_birds=len(window_data.bird_to_idx),
             max_k=int(model_spec["k"]),
             n_layers=int(model_spec.get("n_layers", 2)),
+            use_bird_id=False,
         )
     elif model_kind == "direct_mlp_last":
         model = DirectMLP(
@@ -932,6 +967,7 @@ def train_direct_model(
             n_birds=len(window_data.bird_to_idx),
             k=int(model_spec["k"]),
             last_day_only=True,
+            use_bird_id=False,
         )
     elif model_kind == "direct_mlp_sequence":
         model = DirectMLP(
@@ -939,6 +975,7 @@ def train_direct_model(
             n_birds=len(window_data.bird_to_idx),
             k=int(model_spec["k"]),
             last_day_only=False,
+            use_bird_id=False,
         )
     else:
         raise ValueError(f"Unknown direct model kind: {model_kind}")
@@ -1141,19 +1178,21 @@ def train_triline_model(
             n_birds=len(window_data.bird_to_idx),
             max_k=int(model_spec["k"]),
             n_layers=int(model_spec.get("n_layers", 2)),
-            use_bird_id=True,
+            use_bird_id=False,
         )
     elif model_kind == "triline_lstm":
         model = TrilineLSTM(
             n_features=normalized_features.shape[-1],
             n_birds=len(window_data.bird_to_idx),
             n_layers=int(model_spec.get("n_layers", 2)),
+            use_bird_id=False,
         )
     elif model_kind == "triline_linear_ar":
         model = TrilineLinearAR(
             n_features=normalized_features.shape[-1],
             n_birds=len(window_data.bird_to_idx),
             k=int(model_spec["k"]),
+            use_bird_id=False,
         )
     else:
         raise ValueError(f"Unknown triline model kind: {model_kind}")
@@ -1492,6 +1531,7 @@ def build_direct_model_from_spec(
             n_birds=n_birds,
             max_k=int(model_spec["k"]),
             n_layers=int(model_spec.get("n_layers", 2)),
+            use_bird_id=False,
         )
     if model_kind == "direct_mlp_last":
         return DirectMLP(
@@ -1499,6 +1539,7 @@ def build_direct_model_from_spec(
             n_birds=n_birds,
             k=int(model_spec["k"]),
             last_day_only=True,
+            use_bird_id=False,
         )
     if model_kind == "direct_mlp_sequence":
         return DirectMLP(
@@ -1506,6 +1547,7 @@ def build_direct_model_from_spec(
             n_birds=n_birds,
             k=int(model_spec["k"]),
             last_day_only=False,
+            use_bird_id=False,
         )
     raise ValueError(f"Unknown direct model kind: {model_kind}")
 
@@ -1522,19 +1564,21 @@ def build_triline_model_from_spec(
             n_birds=n_birds,
             max_k=int(model_spec["k"]),
             n_layers=int(model_spec.get("n_layers", 2)),
-            use_bird_id=True,
+            use_bird_id=False,
         )
     if model_kind == "triline_lstm":
         return TrilineLSTM(
             n_features=n_features,
             n_birds=n_birds,
             n_layers=int(model_spec.get("n_layers", 2)),
+            use_bird_id=False,
         )
     if model_kind == "triline_linear_ar":
         return TrilineLinearAR(
             n_features=n_features,
             n_birds=n_birds,
             k=int(model_spec["k"]),
+            use_bird_id=False,
         )
     raise ValueError(f"Unknown triline model kind: {model_kind}")
 
