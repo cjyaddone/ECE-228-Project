@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2026.4.12)  8 JUN 2026 12:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2026.4.12)  8 JUN 2026 16:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -522,10 +522,7 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
 (Font)              for symbol `textbraceleft' on input line 33.
 
-
-Underfull \vbox (badness 1406) has occurred while \output is active []
-
- [1
+[1
 
 
 {C:/Users/chen-/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{E:/Program Fi
@@ -533,29 +530,29 @@ les/MiKTeX/fonts/enc/dvips/base/8r.enc}]
 Underfull \vbox (badness 1383) has occurred while \output is active []
 
  [2]
-<figures/mean_error_by_context.png, id=101, 751.608pt x 274.17432pt>
+<figures/mean_error_by_context.png, id=101, 722.7pt x 260.172pt>
 File: figures/mean_error_by_context.png Graphic file (type png)
 <use figures/mean_error_by_context.png>
 Package pdftex.def Info: figures/mean_error_by_context.png  used on input line 
 135.
-(pdftex.def)             Requested size: 377.60951pt x 137.74782pt.
+(pdftex.def)             Requested size: 377.60951pt x 135.94127pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3]
 [4 <./figures/mean_error_by_context.png>]
-<figures/weather_delta_by_context.png, id=119, 484.209pt x 252.945pt>
+<figures/weather_delta_by_context.png, id=119, 469.755pt x 245.718pt>
 File: figures/weather_delta_by_context.png Graphic file (type png)
 <use figures/weather_delta_by_context.png>
 Package pdftex.def Info: figures/weather_delta_by_context.png  used on input li
 ne 189.
-(pdftex.def)             Requested size: 298.11374pt x 155.73586pt.
-<figures/rollout_mean_error.png, id=120, 498.663pt x 267.399pt>
+(pdftex.def)             Requested size: 298.11374pt x 155.93546pt.
+<figures/rollout_mean_error.png, id=120, 491.436pt x 245.718pt>
 File: figures/rollout_mean_error.png Graphic file (type png)
 <use figures/rollout_mean_error.png>
 Package pdftex.def Info: figures/rollout_mean_error.png  used on input line 220
 .
-(pdftex.def)             Requested size: 310.0378pt x 166.25081pt.
+(pdftex.def)             Requested size: 310.0378pt x 155.02437pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -584,7 +581,7 @@ Here is how much of TeX's memory you used:
  34393 multiletter control sequences out of 15000+600000
  570364 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,1105b,450s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,1161b,450s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <E:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><E:/Progra
 m Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><E:/Program Files/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><E:/Program Files/MiKTeX/fonts/typ
@@ -595,7 +592,7 @@ gram Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><E:/Program Files/Mi
 KTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><E:/Program Files/MiKTeX/fonts/t
 ype1/urw/times/utmb8a.pfb><E:/Program Files/MiKTeX/fonts/type1/urw/times/utmr8a
 .pfb><E:/Program Files/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report_template.pdf (7 pages, 324859 bytes).
+Output written on report_template.pdf (7 pages, 325033 bytes).
 PDF statistics:
  208 PDF objects out of 1000 (max. 8388607)
  44 named destinations out of 1000 (max. 500000)

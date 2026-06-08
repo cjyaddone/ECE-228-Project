@@ -13,7 +13,7 @@
   "test_samples": 2608,
   "train_fly_rate": 0.18731854856014252,
   "test_fly_rate": 0.22546012699604034,
-  "runtime_seconds": 4.830861330032349,
+  "runtime_seconds": 6.170032739639282,
   "mean_error_km": 20.681628969660213,
   "median_error_km": 5.125831152038739,
   "p90_error_km": 66.20398830426369,

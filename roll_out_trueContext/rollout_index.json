@@ -43,10 +43,10 @@
   "with_weather_gifs": [
     {
       "condition": "with_weather true-context",
-      "path_id": "Louis_DER_AU050_eobs_3264__2021__southbound_01",
+      "path_id": "Frensdorf_3_plus_12173_ABR24__2023__southbound_01",
       "selection_reason": "clear_success_lowest_mean_error",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\01_clear_success_lowest_mean_error_Louis_DER_AU050_eobs_3264_2021_southbound_01.gif",
-      "frames": 14
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\01_clear_success_lowest_mean_error_Frensdorf_3_plus_12173_ABR24_2023_southbound_01.gif",
+      "frames": 4
     },
     {
       "condition": "with_weather true-context",
@@ -71,17 +71,17 @@
     },
     {
       "condition": "with_weather true-context",
-      "path_id": "Angela_DER_AY470_eobs_4001__2023__southbound_01",
+      "path_id": "Angela_DER_AY470_eobs_4001__2022__southbound_01",
       "selection_reason": "largest_weather_vs_noweather_contrast",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\05_largest_weather_vs_noweather_contrast_Angela_DER_AY470_eobs_4001_2023_southbound_01.gif",
-      "frames": 6
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\05_largest_weather_vs_noweather_contrast_Angela_DER_AY470_eobs_4001_2022_southbound_01.gif",
+      "frames": 12
     },
     {
       "condition": "with_weather true-context",
-      "path_id": "Angela_DER_AY470_eobs_4001__2022__southbound_01",
+      "path_id": "Bembo_Sparky_DER_AU891_eobs_3042__2023__southbound_01",
       "selection_reason": "hard_failure_high_average_error",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\06_hard_failure_high_average_error_Angela_DER_AY470_eobs_4001_2022_southbound_01.gif",
-      "frames": 12
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\06_hard_failure_high_average_error_Bembo_Sparky_DER_AU891_eobs_3042_2023_southbound_01.gif",
+      "frames": 14
     },
     {
       "condition": "with_weather true-context",
@@ -94,10 +94,10 @@
   "without_weather_gifs": [
     {
       "condition": "without_weather true-context",
-      "path_id": "Sierit_DER_AN858_eobs2561__2021__southbound_01",
+      "path_id": "Frensdorf_3_plus_12173_ABR24__2023__southbound_01",
       "selection_reason": "clear_success_lowest_mean_error",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\01_clear_success_lowest_mean_error_Sierit_DER_AN858_eobs2561_2021_southbound_01.gif",
-      "frames": 6
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\01_clear_success_lowest_mean_error_Frensdorf_3_plus_12173_ABR24_2023_southbound_01.gif",
+      "frames": 4
     },
     {
       "condition": "without_weather true-context",
@@ -115,10 +115,10 @@
     },
     {
       "condition": "without_weather true-context",
-      "path_id": "Rosalie_DER_A2M38_e-obs_6993__2023__southbound_01",
+      "path_id": "Angela_DER_AY470_eobs_4001__2022__southbound_01",
       "selection_reason": "direct_best_or_nearest_best",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\04_direct_best_or_nearest_best_Rosalie_DER_A2M38_e-obs_6993_2023_southbound_01.gif",
-      "frames": 14
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\04_direct_best_or_nearest_best_Angela_DER_AY470_eobs_4001_2022_southbound_01.gif",
+      "frames": 12
     },
     {
       "condition": "without_weather true-context",
@@ -129,10 +129,10 @@
     },
     {
       "condition": "without_weather true-context",
-      "path_id": "Angela_DER_AY470_eobs_4001__2022__southbound_01",
+      "path_id": "Rosalie_DER_A2M38_e-obs_6993__2022__southbound_01",
       "selection_reason": "hard_failure_high_average_error",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\06_hard_failure_high_average_error_Angela_DER_AY470_eobs_4001_2022_southbound_01.gif",
-      "frames": 12
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\06_hard_failure_high_average_error_Rosalie_DER_A2M38_e-obs_6993_2022_southbound_01.gif",
+      "frames": 14
     },
     {
       "condition": "without_weather true-context",

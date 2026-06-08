@@ -40,10 +40,10 @@
   "with_weather_gifs": [
     {
       "condition": "with_weather",
-      "path_id": "Rudolph_plus_A3M22_e-obs_8046__2021__southbound_01",
+      "path_id": "Frensdorf_3_plus_12173_ABR24__2023__southbound_01",
       "selection_reason": "clear_success_lowest_mean_error",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\with_weather\\gifs\\01_clear_success_lowest_mean_error_Rudolph_plus_A3M22_e-obs_8046_2021_southbound_01.gif",
-      "frames": 6
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\with_weather\\gifs\\01_clear_success_lowest_mean_error_Frensdorf_3_plus_12173_ABR24_2023_southbound_01.gif",
+      "frames": 4
     },
     {
       "condition": "with_weather",
@@ -75,26 +75,26 @@
     },
     {
       "condition": "with_weather",
-      "path_id": "Wingersdorf_1_12174_A1X36__2023__southbound_01",
+      "path_id": "Rosalie_DER_A2M38_e-obs_6993__2021__southbound_01",
       "selection_reason": "hard_failure_high_average_error",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\with_weather\\gifs\\06_hard_failure_high_average_error_Wingersdorf_1_12174_A1X36_2023_southbound_01.gif",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\with_weather\\gifs\\06_hard_failure_high_average_error_Rosalie_DER_A2M38_e-obs_6993_2021_southbound_01.gif",
       "frames": 14
     },
     {
       "condition": "with_weather",
-      "path_id": "Steppach_3_12179_AEH97__2023__southbound_01",
+      "path_id": "Wingersdorf_1_12174_A1X36__2023__southbound_01",
       "selection_reason": "long_rollout_story",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\with_weather\\gifs\\07_long_rollout_story_Steppach_3_12179_AEH97_2023_southbound_01.gif",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\with_weather\\gifs\\07_long_rollout_story_Wingersdorf_1_12174_A1X36_2023_southbound_01.gif",
       "frames": 14
     }
   ],
   "without_weather_gifs": [
     {
       "condition": "without_weather",
-      "path_id": "Rudolph_plus_A3M22_e-obs_8046__2021__southbound_01",
+      "path_id": "Frensdorf_3_plus_12173_ABR24__2023__southbound_01",
       "selection_reason": "clear_success_lowest_mean_error",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\01_clear_success_lowest_mean_error_Rudolph_plus_A3M22_e-obs_8046_2021_southbound_01.gif",
-      "frames": 6
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\01_clear_success_lowest_mean_error_Frensdorf_3_plus_12173_ABR24_2023_southbound_01.gif",
+      "frames": 4
     },
     {
       "condition": "without_weather",
@@ -105,9 +105,9 @@
     },
     {
       "condition": "without_weather",
-      "path_id": "Bembo_Sparky_DER_AU891_eobs_3042__2021__southbound_01",
+      "path_id": "Wingersdorf_1_12174_A1X36__2023__southbound_01",
       "selection_reason": "transformer_best_or_nearest_best",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\03_transformer_best_or_nearest_best_Bembo_Sparky_DER_AU891_eobs_3042_2021_southbound_01.gif",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\03_transformer_best_or_nearest_best_Wingersdorf_1_12174_A1X36_2023_southbound_01.gif",
       "frames": 14
     },
     {
@@ -119,23 +119,23 @@
     },
     {
       "condition": "without_weather",
-      "path_id": "Baunach_1_9698_ABR25__2023__southbound_01",
+      "path_id": "Bembo_Sparky_DER_AU891_eobs_3042__2021__southbound_01",
       "selection_reason": "largest_weather_vs_noweather_contrast",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\05_largest_weather_vs_noweather_contrast_Baunach_1_9698_ABR25_2023_southbound_01.gif",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\05_largest_weather_vs_noweather_contrast_Bembo_Sparky_DER_AU891_eobs_3042_2021_southbound_01.gif",
       "frames": 14
     },
     {
       "condition": "without_weather",
-      "path_id": "Angela_DER_AY470_eobs_4001__2022__southbound_01",
+      "path_id": "Rosalie_DER_A2M38_e-obs_6993__2021__southbound_01",
       "selection_reason": "hard_failure_high_average_error",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\06_hard_failure_high_average_error_Angela_DER_AY470_eobs_4001_2022_southbound_01.gif",
-      "frames": 12
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\06_hard_failure_high_average_error_Rosalie_DER_A2M38_e-obs_6993_2021_southbound_01.gif",
+      "frames": 14
     },
     {
       "condition": "without_weather",
-      "path_id": "Wingersdorf_1_12174_A1X36__2023__southbound_01",
+      "path_id": "Baunach_1_9698_ABR25__2023__southbound_01",
       "selection_reason": "long_rollout_story",
-      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\07_long_rollout_story_Wingersdorf_1_12174_A1X36_2023_southbound_01.gif",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\gifs\\07_long_rollout_story_Baunach_1_9698_ABR25_2023_southbound_01.gif",
       "frames": 14
     }
   ],
