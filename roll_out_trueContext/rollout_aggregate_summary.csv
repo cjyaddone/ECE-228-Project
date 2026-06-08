@@ -1,0 +1,3 @@
+condition,paths,skipped_paths,direct_mean_rollout_error_km,direct_final_rollout_error_km,lstm_mean_rollout_error_km,lstm_final_rollout_error_km,transformer_mean_rollout_error_km,transformer_final_rollout_error_km,persistence_mean_rollout_error_km,const_velocity_mean_rollout_error_km
+with_weather,27,7,18.358249017657922,11.144638444960254,18.931426703328444,10.67569484243959,19.1188309324068,11.29383460674235,24.183741790817002,23.09586104340063
+without_weather,27,7,19.850287236980133,13.760277643482214,19.583306053469187,11.85658348734331,18.6127161019289,9.535322091775798,24.183741790817002,23.09586104340063

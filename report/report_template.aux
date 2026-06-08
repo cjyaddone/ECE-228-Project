@@ -2,45 +2,49 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{kranstauber2011movebank}
+\citation{kranstauber2012dbbmm}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Data}{1}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Dataset}{1}{subsection.2.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset summary.}}{2}{table.caption.2}\protected@file@percent }
+\citation{zhou2021informer}
+\citation{wu2021autoformer}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Data}{2}{section.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset and split summary.}}{2}{table.caption.2}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{tab:data_summary}{{1}{2}{Dataset summary}{table.caption.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Features}{2}{subsection.2.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Feature groups used by each experiment setting.}}{2}{table.caption.3}\protected@file@percent }
-\newlabel{tab:features}{{2}{2}{Feature groups used by each experiment setting}{table.caption.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Methods}{2}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Direct Regression Model}{2}{subsection.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Triline Decomposed Model}{2}{subsection.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Transformer Encoder}{3}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Baseline Models}{3}{subsection.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Setup}{3}{section.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Common training configuration.}}{3}{table.caption.4}\protected@file@percent }
-\newlabel{tab:training_config}{{3}{3}{Common training configuration}{table.caption.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Metrics}{3}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Results}{3}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Comparison 1: Direct vs. Triline}{3}{subsection.5.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Direct regression vs. triline decomposition across context lengths. Lower GPS error is better.}}{4}{table.caption.5}\protected@file@percent }
-\newlabel{tab:direct_vs_triline}{{4}{4}{Direct regression vs. triline decomposition across context lengths. Lower GPS error is better}{table.caption.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Direct vs. triline GPS error for $k = 7, 14, 30$. Recommended plot: grouped bar chart or line plot with one line per method and mean GPS error on the y-axis.}}{4}{figure.caption.6}\protected@file@percent }
-\newlabel{fig:direct_vs_triline}{{1}{4}{Direct vs. triline GPS error for $k = 7, 14, 30$. Recommended plot: grouped bar chart or line plot with one line per method and mean GPS error on the y-axis}{figure.caption.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Comparison 2: Transformer vs. LSTM and MLP Baselines}{4}{subsection.5.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 2-layer Transformer vs. 2-layer LSTM and MLP baselines across context lengths. Lower GPS error is better.}}{4}{table.caption.7}\protected@file@percent }
-\newlabel{tab:transformer_vs_baselines}{{5}{4}{2-layer Transformer vs. 2-layer LSTM and MLP baselines across context lengths. Lower GPS error is better}{table.caption.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Transformer vs. LSTM and MLP error across $k = 7, 14, 30$. Recommended plot: grouped bar chart with one group per $k$ and one bar per architecture.}}{5}{figure.caption.8}\protected@file@percent }
-\newlabel{fig:transformer_vs_baselines}{{2}{5}{Transformer vs. LSTM and MLP error across $k = 7, 14, 30$. Recommended plot: grouped bar chart with one group per $k$ and one bar per architecture}{figure.caption.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Comparison 3: With Weather vs. Without Weather}{5}{subsection.5.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Weather ablation across context lengths. Lower GPS error is better.}}{5}{table.caption.9}\protected@file@percent }
-\newlabel{tab:weather_ablation}{{6}{5}{Weather ablation across context lengths. Lower GPS error is better}{table.caption.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces With-weather vs. no-weather GPS error across $k = 7, 14, 30$. Recommended plot: paired bars for each model and context length, or separate line plots for no-weather and weather settings.}}{6}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:weather_ablation}{{3}{6}{With-weather vs. no-weather GPS error across $k = 7, 14, 30$. Recommended plot: paired bars for each model and context length, or separate line plots for no-weather and weather settings}{figure.caption.10}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{6}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Direct vs. Triline}{6}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Transformer vs. Baselines}{6}{subsection.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Effect of Weather}{6}{subsection.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{6}{section.7}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Artifacts to report for reproducibility.}}{6}{table.caption.12}\protected@file@percent }
-\newlabel{tab:reproducibility}{{7}{6}{Artifacts to report for reproducibility}{table.caption.12}{}}
-\gdef \@abspage@last{6}
+\newlabel{tab:data_summary}{{1}{2}{Dataset and split summary}{table.caption.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Methods}{2}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Problem Formulation}{2}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Direct Regression}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Triline Decomposition}{3}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Architectures}{3}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Setup}{3}{section.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Model sizes in the final experiment. Parameter counts vary slightly with feature mode and context length; values shown are representative for $k=30$.}}{3}{table.caption.3}\protected@file@percent }
+\newlabel{tab:model_sizes}{{2}{3}{Model sizes in the final experiment. Parameter counts vary slightly with feature mode and context length; values shown are representative for $k=30$}{table.caption.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{4}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Next-Day Prediction}{4}{subsection.6.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Mean next-day GPS error across context lengths. Longer context helps the triline models most clearly; the LSTM remains the strongest overall model, while Transformer V2 becomes competitive at $k=30$.}}{4}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:mean_error_by_context}{{1}{4}{Mean next-day GPS error across context lengths. Longer context helps the triline models most clearly; the LSTM remains the strongest overall model, while Transformer V2 becomes competitive at $k=30$}{figure.caption.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Next-day prediction results for $k=30$. Lower error is better.}}{4}{table.caption.5}\protected@file@percent }
+\newlabel{tab:k30_results}{{3}{4}{Next-day prediction results for $k=30$. Lower error is better}{table.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Architecture and Context Trends}{4}{subsection.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Best model by mean error for each context and feature setting.}}{4}{table.caption.6}\protected@file@percent }
+\newlabel{tab:cross_k_winners}{{4}{4}{Best model by mean error for each context and feature setting}{table.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Weather Ablation}{5}{subsection.6.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Weather minus no-weather mean error for triline models. Negative values mean weather helps. Weather provides small gains at $k=7$ but inconsistent effects at longer context.}}{5}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:weather_delta}{{2}{5}{Weather minus no-weather mean error for triline models. Negative values mean weather helps. Weather provides small gains at $k=7$ but inconsistent effects at longer context}{figure.caption.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Weather ablation for triline models. Delta is weather minus no-weather mean error; negative is better with weather.}}{5}{table.caption.8}\protected@file@percent }
+\newlabel{tab:weather_ablation}{{5}{5}{Weather ablation for triline models. Delta is weather minus no-weather mean error; negative is better with weather}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Autoregressive Rollout}{5}{subsection.6.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Mean autoregressive rollout error. Learned one-step models improve over persistence in some settings, but rollout remains much harder than one-day prediction.}}{6}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:rollout_mean_error}{{3}{6}{Mean autoregressive rollout error. Learned one-step models improve over persistence in some settings, but rollout remains much harder than one-day prediction}{figure.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Autoregressive rollout aggregate errors over 27 valid paths.}}{6}{table.caption.10}\protected@file@percent }
+\newlabel{tab:rollout}{{6}{6}{Autoregressive rollout aggregate errors over 27 valid paths}{table.caption.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{6}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{6}{section.8}\protected@file@percent }
+\bibcite{kranstauber2011movebank}{{1}{2011}{{Kranstauber et~al.}}{{}}}
+\bibcite{kranstauber2012dbbmm}{{2}{2012}{{Kranstauber et~al.}}{{}}}
+\bibcite{zhou2021informer}{{3}{2021}{{Zhou et~al.}}{{}}}
+\bibcite{wu2021autoformer}{{4}{2021}{{Wu et~al.}}{{}}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Artifacts used to reproduce the final report.}}{7}{table.caption.12}\protected@file@percent }
+\newlabel{tab:reproducibility}{{7}{7}{Artifacts used to reproduce the final report}{table.caption.12}{}}
+\gdef \@abspage@last{7}

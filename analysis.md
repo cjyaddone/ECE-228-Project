@@ -145,3 +145,24 @@ Direct MLP is the most parameter-efficient per unit of error. Triline models gai
 4. **Weather effect is weak under year-grouped split.** Under the chronological split, weather provided a consistent benefit. Under year-grouped split, different years have different weather patterns, so weather features don't generalize as well across train/test years.
 
 5. **LSTM wins because inductive bias matches the task.** Bird trajectory prediction at k≤30 is inherently sequential: the most recent day is the strongest predictor. LSTM's last-hidden-state recency bias is the right inductive bias. The transformer's global attention is more flexible but needs more data and longer sequences to earn its cost.
+---
+
+## Rollout Evaluation
+
+Autoregressive rollouts use a minimum 60-day observed context and extend that context until observed displacement reaches 50 km when possible. Each model then rolls forward for the rest of the path using its trained trailing context window.
+
+| Model | With weather mean km | Without weather mean km | With - without mean km | With weather final km | Without weather final km |
+|-------|---------------------:|------------------------:|-----------------------:|----------------------:|-------------------------:|
+| Direct | 417.22 | 240.07 | 177.15 | 603.58 | 343.52 |
+| LSTM | 165.16 | 175.34 | -10.18 | 193.77 | 206.95 |
+| Transformer | 237.28 | 180.84 | 56.43 | 323.68 | 227.91 |
+
+Valid rollout paths: with weather 27, without weather 27. Skipped paths: with weather 7, without weather 7.
+
+Weather slightly worsens average rollout error across the selected model families.
+
+Artifacts:
+- Per-step and per-path errors: `D:\UCSD\ECE 228\ECE-228-Project\rollout\with_weather`, `D:\UCSD\ECE 228\ECE-228-Project\rollout\without_weather`
+- Weather comparison CSV: `D:\UCSD\ECE 228\ECE-228-Project\rollout\rollout_error_comparison.csv`
+- Representative GIFs: `D:\UCSD\ECE 228\ECE-228-Project\rollout\with_weather\gifs`, `D:\UCSD\ECE 228\ECE-228-Project\rollout\without_weather\gifs`
+

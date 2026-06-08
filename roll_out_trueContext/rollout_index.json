@@ -1,0 +1,148 @@
+{
+  "input_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\data\\combined_southbound_paths_with_weather_matched.csv",
+  "output_root": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext",
+  "device": "cuda",
+  "setup": "fly_threshold_10km",
+  "prediction_mode": "true_context",
+  "min_observed_days": 60,
+  "min_observed_displacement_km": 50.0,
+  "with_weather": {
+    "condition": "with_weather",
+    "prediction_mode": "true_context",
+    "rows": 2843,
+    "paths": 27,
+    "skipped_paths": 7,
+    "setup": "fly_threshold_10km",
+    "fly_threshold_km": 10.0,
+    "min_observed_days": 60,
+    "min_observed_displacement_km": 50.0,
+    "direct_model": "direct_transformer_4l_k30",
+    "lstm_model": "triline_lstm_4l_k30",
+    "transformer_model": "triline_transformer_v2_k30",
+    "predictions_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\rollout_all_predictions.csv",
+    "summary_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\rollout_all_summary.csv",
+    "skipped_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\rollout_all_skipped.csv"
+  },
+  "without_weather": {
+    "condition": "without_weather",
+    "prediction_mode": "true_context",
+    "rows": 2843,
+    "paths": 27,
+    "skipped_paths": 7,
+    "setup": "fly_threshold_10km",
+    "fly_threshold_km": 10.0,
+    "min_observed_days": 60,
+    "min_observed_displacement_km": 50.0,
+    "direct_model": "direct_transformer_4l_k7",
+    "lstm_model": "triline_lstm_4l_k30",
+    "transformer_model": "triline_transformer_v2_k30",
+    "predictions_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\rollout_all_predictions.csv",
+    "summary_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\rollout_all_summary.csv",
+    "skipped_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\rollout_all_skipped.csv"
+  },
+  "with_weather_gifs": [
+    {
+      "condition": "with_weather true-context",
+      "path_id": "Louis_DER_AU050_eobs_3264__2021__southbound_01",
+      "selection_reason": "clear_success_lowest_mean_error",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\01_clear_success_lowest_mean_error_Louis_DER_AU050_eobs_3264_2021_southbound_01.gif",
+      "frames": 14
+    },
+    {
+      "condition": "with_weather true-context",
+      "path_id": "Bembo_Sparky_DER_AU891_eobs_3042__2021__southbound_01",
+      "selection_reason": "lstm_best_or_nearest_best",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\02_lstm_best_or_nearest_best_Bembo_Sparky_DER_AU891_eobs_3042_2021_southbound_01.gif",
+      "frames": 14
+    },
+    {
+      "condition": "with_weather true-context",
+      "path_id": "Steppach_2_12178_AEH96__2023__southbound_01",
+      "selection_reason": "transformer_best_or_nearest_best",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\03_transformer_best_or_nearest_best_Steppach_2_12178_AEH96_2023_southbound_01.gif",
+      "frames": 14
+    },
+    {
+      "condition": "with_weather true-context",
+      "path_id": "Wingersdorf_2_12175_AEH98__2023__southbound_01",
+      "selection_reason": "direct_best_or_nearest_best",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\04_direct_best_or_nearest_best_Wingersdorf_2_12175_AEH98_2023_southbound_01.gif",
+      "frames": 5
+    },
+    {
+      "condition": "with_weather true-context",
+      "path_id": "Angela_DER_AY470_eobs_4001__2023__southbound_01",
+      "selection_reason": "largest_weather_vs_noweather_contrast",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\05_largest_weather_vs_noweather_contrast_Angela_DER_AY470_eobs_4001_2023_southbound_01.gif",
+      "frames": 6
+    },
+    {
+      "condition": "with_weather true-context",
+      "path_id": "Angela_DER_AY470_eobs_4001__2022__southbound_01",
+      "selection_reason": "hard_failure_high_average_error",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\06_hard_failure_high_average_error_Angela_DER_AY470_eobs_4001_2022_southbound_01.gif",
+      "frames": 12
+    },
+    {
+      "condition": "with_weather true-context",
+      "path_id": "Wingersdorf_1_12174_A1X36__2023__southbound_01",
+      "selection_reason": "long_rollout_story",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\with_weather\\gifs\\07_long_rollout_story_Wingersdorf_1_12174_A1X36_2023_southbound_01.gif",
+      "frames": 14
+    }
+  ],
+  "without_weather_gifs": [
+    {
+      "condition": "without_weather true-context",
+      "path_id": "Sierit_DER_AN858_eobs2561__2021__southbound_01",
+      "selection_reason": "clear_success_lowest_mean_error",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\01_clear_success_lowest_mean_error_Sierit_DER_AN858_eobs2561_2021_southbound_01.gif",
+      "frames": 6
+    },
+    {
+      "condition": "without_weather true-context",
+      "path_id": "Bembo_Sparky_DER_AU891_eobs_3042__2023__southbound_01",
+      "selection_reason": "lstm_best_or_nearest_best",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\02_lstm_best_or_nearest_best_Bembo_Sparky_DER_AU891_eobs_3042_2023_southbound_01.gif",
+      "frames": 14
+    },
+    {
+      "condition": "without_weather true-context",
+      "path_id": "Wingersdorf_2_12175_AEH98__2023__southbound_01",
+      "selection_reason": "transformer_best_or_nearest_best",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\03_transformer_best_or_nearest_best_Wingersdorf_2_12175_AEH98_2023_southbound_01.gif",
+      "frames": 5
+    },
+    {
+      "condition": "without_weather true-context",
+      "path_id": "Rosalie_DER_A2M38_e-obs_6993__2023__southbound_01",
+      "selection_reason": "direct_best_or_nearest_best",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\04_direct_best_or_nearest_best_Rosalie_DER_A2M38_e-obs_6993_2023_southbound_01.gif",
+      "frames": 14
+    },
+    {
+      "condition": "without_weather true-context",
+      "path_id": "Angela_DER_AY470_eobs_4001__2023__southbound_01",
+      "selection_reason": "largest_weather_vs_noweather_contrast",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\05_largest_weather_vs_noweather_contrast_Angela_DER_AY470_eobs_4001_2023_southbound_01.gif",
+      "frames": 6
+    },
+    {
+      "condition": "without_weather true-context",
+      "path_id": "Angela_DER_AY470_eobs_4001__2022__southbound_01",
+      "selection_reason": "hard_failure_high_average_error",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\06_hard_failure_high_average_error_Angela_DER_AY470_eobs_4001_2022_southbound_01.gif",
+      "frames": 12
+    },
+    {
+      "condition": "without_weather true-context",
+      "path_id": "Wingersdorf_1_12174_A1X36__2023__southbound_01",
+      "selection_reason": "long_rollout_story",
+      "gif": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\without_weather\\gifs\\07_long_rollout_story_Wingersdorf_1_12174_A1X36_2023_southbound_01.gif",
+      "frames": 14
+    }
+  ],
+  "comparison_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\rollout_error_comparison.csv",
+  "aggregate_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\roll_out_trueContext\\rollout_aggregate_summary.csv",
+  "note": "Future-day predictions use true preceding context and are not fed back autoregressively."
+}
