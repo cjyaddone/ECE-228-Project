@@ -7,7 +7,7 @@
   "fly_threshold_km": 10.0,
   "min_observed_days": 60,
   "min_observed_displacement_km": 50.0,
-  "direct_model": "direct_transformer_4l_k7",
+  "direct_model": "direct_transformer_4l_k30",
   "lstm_model": "triline_lstm_4l_k30",
   "transformer_model": "triline_transformer_v2_k30",
   "predictions_csv": "D:\\UCSD\\ECE 228\\ECE-228-Project\\rollout\\without_weather\\rollout_all_predictions.csv",

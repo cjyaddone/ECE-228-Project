@@ -29,7 +29,6 @@ from run_current_rollout_gifs import (
     choose_device,
     create_comparison,
     select_gif_cases,
-    selected_fly_threshold_from_metrics,
     write_csv,
     write_gifs,
     write_json,
@@ -86,7 +85,6 @@ def true_context_triline_model(
     path_df: pd.DataFrame,
     context_days: int,
     device: torch.device,
-    selected_fly_threshold: float = 0.5,
 ) -> tuple[list[float], list[float], list[float]]:
     model_spec = dict(checkpoint["model_spec"])
     k = int(model_spec["k"])
@@ -106,8 +104,6 @@ def true_context_triline_model(
             outputs = model(feature_tensor, bird_tensor)
             fly_prob = float(torch.sigmoid(outputs["fly_logit"]).detach().cpu().numpy()[0])
             distance = float(torch.expm1(outputs["log_distance"]).clamp_min(0.0).detach().cpu().numpy()[0])
-            if fly_prob < selected_fly_threshold:
-                distance = 0.0
             direction = outputs["direction"].detach().cpu().numpy()
             previous = path_df.iloc[target_index - 1]
             next_lat_arr, next_lon_arr = runner.reconstruct_from_distance_heading(
@@ -172,16 +168,14 @@ def evaluate_condition(
     direct_row = runner.best_summary_row(setup_dir, "direct")
     lstm_row = runner.best_summary_row(setup_dir, "triline", kind="triline_lstm")
     transformer_row = runner.best_summary_row(setup_dir, "triline", kind="triline_transformer")
-    direct_checkpoint_path = runner.model_checkpoint_path(setup_dir, direct_row)
-    lstm_checkpoint_path = runner.model_checkpoint_path(setup_dir, lstm_row)
-    transformer_checkpoint_path = runner.model_checkpoint_path(setup_dir, transformer_row)
-    lstm_fly_threshold = selected_fly_threshold_from_metrics(lstm_checkpoint_path)
-    transformer_fly_threshold = selected_fly_threshold_from_metrics(transformer_checkpoint_path)
-
-    direct_model, direct_checkpoint = runner.load_checkpoint_model(direct_checkpoint_path, "direct", device)
-    lstm_model, lstm_checkpoint = runner.load_checkpoint_model(lstm_checkpoint_path, "triline", device)
+    direct_model, direct_checkpoint = runner.load_checkpoint_model(
+        runner.model_checkpoint_path(setup_dir, direct_row), "direct", device
+    )
+    lstm_model, lstm_checkpoint = runner.load_checkpoint_model(
+        runner.model_checkpoint_path(setup_dir, lstm_row), "triline", device
+    )
     transformer_model, transformer_checkpoint = runner.load_checkpoint_model(
-        transformer_checkpoint_path, "triline", device
+        runner.model_checkpoint_path(setup_dir, transformer_row), "triline", device
     )
 
     for path_id in test_path_ids:
@@ -238,7 +232,6 @@ def evaluate_condition(
             path_df=path_df,
             context_days=context_days,
             device=device,
-            selected_fly_threshold=lstm_fly_threshold,
         )
         transformer_lat, transformer_lon, transformer_fly_prob = true_context_triline_model(
             runner=runner,
@@ -247,7 +240,6 @@ def evaluate_condition(
             path_df=path_df,
             context_days=context_days,
             device=device,
-            selected_fly_threshold=transformer_fly_threshold,
         )
         baselines = true_context_baselines(path_df, context_days)
         rollout_steps = len(path_df) - context_days

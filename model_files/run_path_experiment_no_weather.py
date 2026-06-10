@@ -479,24 +479,13 @@ def build_windows(df: pd.DataFrame, k: int, fly_threshold_km: float) -> WindowDa
 
 
 def make_chronological_split(window_data: WindowData, train_fraction: float = 0.8) -> tuple[np.ndarray, np.ndarray]:
-    """Split windows by year groups so each partition contains full annual cycles.
-
-    Windows are grouped by calendar year of ``target_dates``.  The first
-    ``train_fraction`` of unique years go to training, the remainder to test.
-    This avoids the seasonal blindness of a single date cutoff while keeping
-    temporal leakage between splits to a minimum.
-    """
-    dates = pd.DatetimeIndex(window_data.target_dates)
-    years = dates.year.values
-    unique_years = np.unique(years)
-    n_train_years = max(1, int(len(unique_years) * train_fraction))
-    if n_train_years >= len(unique_years):
-        n_train_years = len(unique_years) - 1
-    if n_train_years < 1:
-        raise ValueError(f"Need at least 2 unique years for a split, got {len(unique_years)}")
-    train_mask = np.isin(years, unique_years[:n_train_years])
-    train_idx = np.where(train_mask)[0]
-    test_idx = np.where(~train_mask)[0]
+    """Split windows by target date: first 80% train, last 20% test."""
+    order = np.argsort(window_data.target_dates)
+    split_idx = int(len(order) * train_fraction)
+    if split_idx <= 0 or split_idx >= len(order):
+        raise ValueError(f"Chronological split needs train and test samples, got {len(order)} windows")
+    train_idx = order[:split_idx]
+    test_idx = order[split_idx:]
     return train_idx, test_idx
 
 
@@ -1097,10 +1086,7 @@ def train_triline_model(
         pred_directions,
     )
     errors = haversine_km(window_data.target_lat[test_idx], window_data.target_lon[test_idx], pred_lat, pred_lon)
-    ungated_metrics = {
-        f"ungated_{key}": value
-        for key, value in gps_metrics(errors, window_data.target_step_km[test_idx], fly_threshold_km).items()
-    }
+    primary_metrics = gps_metrics(errors, window_data.target_step_km[test_idx], fly_threshold_km)
 
     gated_distances = pred_distances.copy()
     gated_distances[probabilities < selected_threshold] = 0.0
@@ -1116,8 +1102,10 @@ def train_triline_model(
         gated_lat,
         gated_lon,
     )
-    primary_metrics = gps_metrics(gated_errors, window_data.target_step_km[test_idx], fly_threshold_km)
-    gated_metrics = {f"gated_{key}": value for key, value in primary_metrics.items()}
+    gated_metrics = {
+        f"gated_{key}": value
+        for key, value in gps_metrics(gated_errors, window_data.target_step_km[test_idx], fly_threshold_km).items()
+    }
 
     save_predictions(
         model_dir / "predictions.csv",
@@ -1147,7 +1135,6 @@ def train_triline_model(
         "best_epoch": best_epoch,
         "best_test_loss": best_loss,
         "final_test_loss": final_loss,
-        "selected_fly_threshold": selected_threshold,
         "raw_pos_weight": raw_pos_weight,
         "pos_weight": pos_weight_value,
         "train_samples": int(len(train_idx)),
@@ -1156,7 +1143,6 @@ def train_triline_model(
         "test_fly_rate": float(window_data.labels[test_idx].mean()),
         "runtime_seconds": float(time.time() - start_time),
         **primary_metrics,
-        **ungated_metrics,
         **gated_metrics,
         **tuned_fly_metrics,
     }
@@ -1513,7 +1499,6 @@ def rollout_triline_model(
     rollout_steps: int,
     device: torch.device,
     context_days: int = ROLLOUT_CONTEXT_K,
-    selected_fly_threshold: float = 0.5,
 ) -> tuple[list[float], list[float], list[float]]:
     model_spec = dict(checkpoint["model_spec"])
     k = int(model_spec["k"])
@@ -1534,8 +1519,6 @@ def rollout_triline_model(
             outputs = model(feature_tensor, bird_tensor)
             fly_prob = float(torch.sigmoid(outputs["fly_logit"]).detach().cpu().numpy()[0])
             distance = float(torch.expm1(outputs["log_distance"]).clamp_min(0.0).detach().cpu().numpy()[0])
-            if fly_prob < selected_fly_threshold:
-                distance = 0.0
             direction = outputs["direction"].detach().cpu().numpy()
             next_lat_arr, next_lon_arr = reconstruct_from_distance_heading(
                 np.array([float(context_rows[-1]["lat_median"])]),
@@ -1655,14 +1638,6 @@ def best_summary_row(
         raise RuntimeError(f"No usable {family} rows{suffix} found in {summary_path}")
     row = summary.loc[summary["mean_error_km"].astype(float).idxmin()]
     return row.to_dict()
-
-
-def selected_fly_threshold_from_row(row: dict[str, object]) -> float:
-    for key in ["selected_fly_threshold", "fly_threshold"]:
-        value = pd.to_numeric(pd.Series([row.get(key)]), errors="coerce").iloc[0]
-        if pd.notna(value):
-            return float(value)
-    return 0.5
 
 
 def model_checkpoint_path(setup_dir: Path, row: dict[str, object]) -> Path:
@@ -1828,7 +1803,6 @@ def run_rollout_visualizations(
 
         direct_row = best_summary_row(setup_dir, "direct")
         triline_row = best_summary_row(setup_dir, "triline")
-        triline_fly_threshold = selected_fly_threshold_from_row(triline_row)
         direct_ckpt_path = model_checkpoint_path(setup_dir, direct_row)
         triline_ckpt_path = model_checkpoint_path(setup_dir, triline_row)
         direct_model, direct_checkpoint = load_checkpoint_model(direct_ckpt_path, "direct", device)
@@ -1847,7 +1821,6 @@ def run_rollout_visualizations(
             path_df,
             actual_rollout_steps,
             device,
-            selected_fly_threshold=triline_fly_threshold,
         )
         baselines = rollout_baselines(path_df, actual_rollout_steps)
         write_rollout_csv(
@@ -2121,8 +2094,6 @@ def run_all_test_rollouts(
                 continue
 
             rollout_steps = len(path_df) - context_days
-            lstm_fly_threshold = selected_fly_threshold_from_row(lstm_row)
-            transformer_fly_threshold = selected_fly_threshold_from_row(transformer_row)
             direct_lat, direct_lon = rollout_direct_model(
                 direct_model,
                 direct_checkpoint,
@@ -2138,7 +2109,6 @@ def run_all_test_rollouts(
                 rollout_steps,
                 device,
                 context_days=context_days,
-                selected_fly_threshold=lstm_fly_threshold,
             )
             transformer_lat, transformer_lon, transformer_fly_prob = rollout_triline_model(
                 transformer_model,
@@ -2147,7 +2117,6 @@ def run_all_test_rollouts(
                 rollout_steps,
                 device,
                 context_days=context_days,
-                selected_fly_threshold=transformer_fly_threshold,
             )
             baselines = rollout_baselines(path_df, rollout_steps, context_days=context_days)
             app_rows.extend(

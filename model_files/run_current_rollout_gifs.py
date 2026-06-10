@@ -85,19 +85,6 @@ def release_torch_objects(*objects: object) -> None:
         torch.cuda.empty_cache()
 
 
-def selected_fly_threshold_from_metrics(checkpoint_path: Path) -> float:
-    metrics_path = checkpoint_path.with_name("metrics.json")
-    try:
-        payload = json.loads(metrics_path.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError, OSError):
-        return 0.5
-    for key in ["selected_fly_threshold", "fly_threshold"]:
-        value = pd.to_numeric(pd.Series([payload.get(key)]), errors="coerce").iloc[0]
-        if pd.notna(value):
-            return float(value)
-    return 0.5
-
-
 def evaluate_condition(
     *,
     label: str,
@@ -125,16 +112,14 @@ def evaluate_condition(
     lstm_row = runner.best_summary_row(setup_dir, "triline", kind="triline_lstm")
     transformer_row = runner.best_summary_row(setup_dir, "triline", kind="triline_transformer")
 
-    direct_checkpoint_path = runner.model_checkpoint_path(setup_dir, direct_row)
-    lstm_checkpoint_path = runner.model_checkpoint_path(setup_dir, lstm_row)
-    transformer_checkpoint_path = runner.model_checkpoint_path(setup_dir, transformer_row)
-    lstm_fly_threshold = selected_fly_threshold_from_metrics(lstm_checkpoint_path)
-    transformer_fly_threshold = selected_fly_threshold_from_metrics(transformer_checkpoint_path)
-
-    direct_model, direct_checkpoint = runner.load_checkpoint_model(direct_checkpoint_path, "direct", device)
-    lstm_model, lstm_checkpoint = runner.load_checkpoint_model(lstm_checkpoint_path, "triline", device)
+    direct_model, direct_checkpoint = runner.load_checkpoint_model(
+        runner.model_checkpoint_path(setup_dir, direct_row), "direct", device
+    )
+    lstm_model, lstm_checkpoint = runner.load_checkpoint_model(
+        runner.model_checkpoint_path(setup_dir, lstm_row), "triline", device
+    )
     transformer_model, transformer_checkpoint = runner.load_checkpoint_model(
-        transformer_checkpoint_path, "triline", device
+        runner.model_checkpoint_path(setup_dir, transformer_row), "triline", device
     )
 
     for path_id in test_path_ids:
@@ -190,7 +175,6 @@ def evaluate_condition(
             rollout_steps,
             device,
             context_days=context_days,
-            selected_fly_threshold=lstm_fly_threshold,
         )
         transformer_lat, transformer_lon, transformer_fly_prob = runner.rollout_triline_model(
             transformer_model,
@@ -199,7 +183,6 @@ def evaluate_condition(
             rollout_steps,
             device,
             context_days=context_days,
-            selected_fly_threshold=transformer_fly_threshold,
         )
         baselines = runner.rollout_baselines(path_df, rollout_steps, context_days=context_days)
 

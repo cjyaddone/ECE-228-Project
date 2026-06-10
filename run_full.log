@@ -1,27 +1,27 @@
-2026-06-08 16:22:48,197 INFO Using device: cuda
-2026-06-08 16:22:48,809 INFO with_weather: building windows for threshold 10.0 km
-2026-06-08 16:22:56,552 INFO with_weather: training direct_mlp_sequence_k7
-2026-06-08 16:23:04,376 INFO with_weather: training direct_transformer_4l_k7
-2026-06-08 16:23:31,505 INFO with_weather: training triline_lstm_4l_k7
-2026-06-08 16:23:50,829 INFO with_weather: training triline_transformer_v2_k7
-2026-06-08 16:24:33,662 INFO with_weather: training direct_mlp_sequence_k14
-2026-06-08 16:24:39,845 INFO with_weather: training direct_transformer_4l_k14
-2026-06-08 16:25:04,345 INFO with_weather: training triline_lstm_4l_k14
-2026-06-08 16:25:27,325 INFO with_weather: training triline_transformer_v2_k14
-2026-06-08 16:26:12,143 INFO with_weather: training direct_mlp_sequence_k30
-2026-06-08 16:26:16,854 INFO with_weather: training direct_transformer_4l_k30
-2026-06-08 16:26:34,798 INFO with_weather: training triline_lstm_4l_k30
-2026-06-08 16:26:57,969 INFO with_weather: training triline_transformer_v2_k30
-2026-06-08 16:27:26,232 INFO without_weather: building windows for threshold 10.0 km
-2026-06-08 16:27:36,275 INFO without_weather: training direct_mlp_sequence_k7
-2026-06-08 16:27:43,662 INFO without_weather: training direct_transformer_4l_k7
-2026-06-08 16:28:13,338 INFO without_weather: training triline_lstm_4l_k7
-2026-06-08 16:28:36,292 INFO without_weather: training triline_transformer_v2_k7
-2026-06-08 16:29:22,668 INFO without_weather: training direct_mlp_sequence_k14
-2026-06-08 16:29:28,201 INFO without_weather: training direct_transformer_4l_k14
-2026-06-08 16:29:51,699 INFO without_weather: training triline_lstm_4l_k14
-2026-06-08 16:30:15,492 INFO without_weather: training triline_transformer_v2_k14
-2026-06-08 16:31:02,460 INFO without_weather: training direct_mlp_sequence_k30
-2026-06-08 16:31:07,417 INFO without_weather: training direct_transformer_4l_k30
-2026-06-08 16:31:28,787 INFO without_weather: training triline_lstm_4l_k30
-2026-06-08 16:31:56,469 INFO without_weather: training triline_transformer_v2_k30
+2026-06-08 12:44:56,096 INFO Using device: cuda
+2026-06-08 12:44:56,696 INFO with_weather: building windows for threshold 10.0 km
+2026-06-08 12:45:03,811 INFO with_weather: training direct_mlp_sequence_k7
+2026-06-08 12:45:12,360 INFO with_weather: training direct_transformer_4l_k7
+2026-06-08 12:45:39,614 INFO with_weather: training triline_lstm_4l_k7
+2026-06-08 12:45:57,610 INFO with_weather: training triline_transformer_v2_k7
+2026-06-08 12:46:30,670 INFO with_weather: training direct_mlp_sequence_k14
+2026-06-08 12:46:36,590 INFO with_weather: training direct_transformer_4l_k14
+2026-06-08 12:46:56,984 INFO with_weather: training triline_lstm_4l_k14
+2026-06-08 12:47:19,726 INFO with_weather: training triline_transformer_v2_k14
+2026-06-08 12:47:57,701 INFO with_weather: training direct_mlp_sequence_k30
+2026-06-08 12:48:02,139 INFO with_weather: training direct_transformer_4l_k30
+2026-06-08 12:48:20,961 INFO with_weather: training triline_lstm_4l_k30
+2026-06-08 12:48:46,474 INFO with_weather: training triline_transformer_v2_k30
+2026-06-08 12:49:17,904 INFO without_weather: building windows for threshold 10.0 km
+2026-06-08 12:49:24,745 INFO without_weather: training direct_mlp_sequence_k7
+2026-06-08 12:49:31,498 INFO without_weather: training direct_transformer_4l_k7
+2026-06-08 12:49:55,043 INFO without_weather: training triline_lstm_4l_k7
+2026-06-08 12:50:18,046 INFO without_weather: training triline_transformer_v2_k7
+2026-06-08 12:51:03,737 INFO without_weather: training direct_mlp_sequence_k14
+2026-06-08 12:51:09,443 INFO without_weather: training direct_transformer_4l_k14
+2026-06-08 12:51:36,978 INFO without_weather: training triline_lstm_4l_k14
+2026-06-08 12:51:59,886 INFO without_weather: training triline_transformer_v2_k14
+2026-06-08 12:52:41,675 INFO without_weather: training direct_mlp_sequence_k30
+2026-06-08 12:52:46,085 INFO without_weather: training direct_transformer_4l_k30
+2026-06-08 12:53:06,432 INFO without_weather: training triline_lstm_4l_k30
+2026-06-08 12:53:33,728 INFO without_weather: training triline_transformer_v2_k30

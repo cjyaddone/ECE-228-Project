@@ -1,6 +1,6 @@
 # Weather-Conditioned Bird Migration Trajectory Forecasting
 
-This repository contains the final ECE 228 project for next-day southbound bird migration trajectory prediction. The project compares direct GPS displacement regression with a triline movement decomposition that predicts fly/no-fly, distance, and heading, and evaluates whether weather covariates improve held-out-year generalization.
+This repository contains the final ECE 228 project for next-day southbound bird migration trajectory prediction. The project compares direct GPS displacement regression with a triline movement decomposition that predicts fly/no-fly, distance, and heading, and evaluates whether weather covariates improve chronological future-date generalization.
 
 ## Repository Layout
 
@@ -36,7 +36,7 @@ Generate current rollout summaries and GIFs:
 python model_files/run_current_rollout_gifs.py
 ```
 
-The full run uses seed `42`, context lengths `k = 7, 14, 30`, a 10 km fly/stationary threshold, AdamW with learning rate `1e-3` and weight decay `1e-4`, batch size `128`, and a year-grouped 80/20 train/test split.
+The full run uses seed `42`, context lengths `k = 7, 14, 30`, a 10 km fly/stationary threshold, AdamW with learning rate `1e-3` and weight decay `1e-4`, batch size `128`, and a chronological 80/20 train/test split by target date. The current training loop uses the chronological test partition for learning-rate scheduling, early stopping, and checkpoint selection; there is no separate validation split.
 
 ## Results Artifacts
 
