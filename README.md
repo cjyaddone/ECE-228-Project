@@ -1,7 +1,6 @@
 # Weather-Conditioned Deep Learning for Bird Migration Forecasting
 
 ECE 228 Course Final Project, Team 53  
-Xinyan Cai and Jiayi Chen, UC San Diego
 
 ## Overview
 
@@ -9,7 +8,7 @@ This project studies next-day southbound bird migration forecasting from daily G
 
 The final experiments evaluate Direct MLP, Triline LSTM, and Triline Transformer V2 models with context lengths `k = 7, 14, 30`, both with and without weather covariates. All reported results use a chronological 80/20 train/test split by target date.
 
-For full details, see the project report in [`report/report_template.pdf`](report/report_template.pdf).
+For full details, see the project report in [`report/Weather_Conditioned_Deep_Learning_for_Bird_Migration_Departure_and_Movement_Forecasting.pdf`](report/Weather_Conditioned_Deep_Learning_for_Bird_Migration_Departure_and_Movement_Forecasting.pdf).
 
 ## Key Findings
 
@@ -52,8 +51,8 @@ rollout/
   rollout_aggregate_summary.csv                        # aggregate rollout metrics
 
 report/
-  report_template.tex                                  # final report source
-  report_template.pdf                                  # compiled report
+  report.tex                                  # final report source
+  Weather_Conditioned_Deep_Learning_for_Bird_Migration_Departure_and_Movement_Forecasting.pdf                                  # compiled report
   figures/                                             # report figures
 
 weather_vs_noweather_comparison.csv                    # weather ablation summary

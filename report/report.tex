@@ -1,0 +1,113 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2022
+
+
+% ready for submission
+\usepackage[preprint]{neurips_2026}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2022}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2022}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2022}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\newcommand{\new}[1]{{\color{red} #1}}
+
+\title{ECE 228 Project Proposal\\ Weather-Conditioned Deep Learning for Bird Migration Departure and Movement Forecasting}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+ Xinyan Cai, Jiayi Chen \\
+  Department of Electrical and Computer Engineering\\
+  University of California, San Diego\\
+  \texttt{\{xic116, jic101\}@ucsd.edu} \\
+  (Team 53)
+}
+
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+Bird migration prediction is an important problem in ecology, with applications in conservation and environmental monitoring. In this project, we aim to predict future bird movement based on historical trajectory data and environmental conditions such as weather. We explore deep learning approaches for modeling spatiotemporal patterns in migration behavior. Our proposed method uses Transformer to capture long-range dependencies in trajectory sequences by leveraging self-attention. The model takes as input past locations, movement features, temporal information, and environmental data, and outputs a predicted future movement or location. We evaluate performance using prediction error and directional accuracy, and expect the Transformer model to outperform baseline methods due to its ability to model complex dependencies in sequential data.
+\end{abstract}
+
+\section{Project Proposal: Track 2}
+
+\subsection{Problem Background \& Motivation}
+
+Predicting bird migration trajectories is an important problem in ecology and environmental science. Accurate prediction of migration paths can help with biodiversity conservation, habitat protection, and understanding how climate change affects animal behavior. Traditionally, migration patterns have been studied using statistical models and manual observation, but these approaches struggle to capture complex spatiotemporal dependencies in large-scale data.
+
+With the increasing availability of GPS tracking data and environmental data such as weather conditions, machine learning provides a promising way to model migration behavior. In this project, we aim to predict the future location or movement direction of birds based on their past trajectories and environmental factors (e.g., temperature, wind, and time). This is essentially a sequence prediction problem with both spatial and temporal dependencies.
+
+\subsection{Related Work}
+
+Previous work on bird migration forecasting and animal movement modeling can be broadly categorized into three areas.
+
+First, bird migration studies have shown that animal movement is strongly related to environmental and atmospheric conditions. Large-scale tracking platforms such as Movebank provide standardized animal tracking data for movement analysis \cite{kranstauber2011movebank}. Prior ecological studies have also shown that wind, weather, and other atmospheric conditions can create favorable or unfavorable migration paths for birds \cite{shamounbaranes2017atmospheric}. At a continental scale, Van Doren and Horton developed a bird migration forecasting system that links atmospheric variables with migration intensity \cite{vandoren2018continental}. Similarly, BirdCast and MistNet use weather radar data and convolutional neural networks to estimate large-scale bird migration patterns \cite{lin2019mistnet}. However, these methods mainly focus on aggregate migration intensity rather than predicting the future trajectory of an individual bird.
+
+Second, traditional statistical models have been widely used to describe animal movement. Markov models and correlated random walks assume that the next movement step depends on the current state or a limited history, providing a simple and interpretable framework for trajectory modeling. Integrated step selection analysis (iSSA) further combines movement dynamics with habitat selection to model how animals choose their next step under environmental constraints \cite{avgar2016integrated}. These methods are effective for capturing local movement behavior and are grounded in ecological theory. However, they rely on strong assumptions about independence or short-term dependencies, which limit their ability to model complex, long-range temporal patterns and nonlinear interactions between environmental factors and movement decisions.
+
+Third, deep learning methods provide more flexible model structures for trajectory forecasting. DeepSSF bridges traditional step selection models and modern deep learning by using neural networks to learn habitat selection and movement in a data-driven way \cite{forrest2026deepssf}, but it still only captures limited trajectory history. CNN-based models are effective for extracting spatial features from environmental data such as radar or weather maps, as demonstrated in MistNet \cite{lin2019mistnet}. However, CNNs alone are not well suited for modeling temporal dependencies in movement sequences. Recurrent neural networks (RNNs) and Long Short-Term Memory (LSTM) models address this by modeling sequential data, but they process inputs step by step and can struggle with long-range dependencies. Transformer-based models overcome this limitation using self-attention mechanisms to capture relationships across all time steps. MoveFormer is particularly relevant, as it applies a Transformer-based framework to predict animal movement steps using past trajectories, temporal information, and environmental covariates \cite{cifka2023moveformer}. These deep learning approaches provide a strong foundation for our project, especially for integrating movement history, environmental features, and spatial context to predict future direction vectors at the individual level.
+
+\subsection{High-level Methodology}
+
+In this project, we propose to use a Transformer-based model to predict bird migration trajectories. 
+
+We plan to use individual-level GPS tracking data from Movebank, and augment each observation with aligned weather covariates (e.g., wind and precipitation features) using Movebank’s add-on environmental data.
+
+The input to our model will include:
+\begin{itemize}
+    \item Historical locations of the bird (latitude and longitude)
+    \item Movement features such as speed, direction and distance between consecutive points
+    \item Temporal information (e.g., time of day, day of year)
+    \item Environmental features (e.g., tailwind support, crosswind, headwind, pressure change, precipitation flag)
+\end{itemize}
+
+We will first preprocess the data by converting raw inputs into feature vectors. For example, location can be represented as coordinates, time can be encoded using sinusoidal functions, and environmental data can be extracted from weather datasets. These features will then be combined into a sequence of embeddings.
+
+The Transformer model will take this sequence as input and use self-attention to learn relationships across different time steps. The output of the model will be a predicted future movement, such as a direction vector, traveling distßance, or next location after a fixed time interval (e.g., 3 days later).
+
+To evaluate our approach, we will compare the Transformer model with baseline methods such as an LSTM-based model. We will measure performance using metrics such as prediction error (distance between predicted and actual location) and directional accuracy.
+
+Overall, we expect the Transformer model to better capture long-range dependencies in migration patterns and improve prediction accuracy compared to traditional sequence models.
+
+\bibliographystyle{plain}   % or unsrt, ieeetr, abbrv
+
+\clearpage
+\bibliography{references}
+
+\end{document}
