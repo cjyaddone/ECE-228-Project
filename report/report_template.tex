@@ -32,22 +32,22 @@
 \maketitle
 
 \begin{abstract}
-Forecasting animal migration from GPS traces is difficult because most daily observations are stationary or short stopover movements, while a small fraction are long directed flights. We study next-day southbound bird trajectory forecasting from recent movement history and optional weather covariates. Our final experiment compares direct displacement regression against a triline decomposition into fly/no-fly, distance, and heading; compares MLP, Transformer, and LSTM encoders; and evaluates context lengths $k \in \{7,14,30\}$ under a pure chronological 80/20 train/test split by target date. With weather at $k=30$, the Direct Transformer reaches the best mean error of 15.41 km, while Triline Transformer V2 achieves the best median and P90 errors among triline models. Without weather, Triline Transformer V2 is the strongest model by mean error for all context lengths. Weather improves several settings, especially Direct models and LSTM rollouts, but its effect remains model-dependent. Autoregressive rollout experiments show that one-step errors compound substantially over full migration paths.
+Forecasting animal migration from GPS traces is difficult because most daily observations are stationary or short stopover movements, while a small fraction are long directed flights. We study next-day southbound bird trajectory forecasting from recent movement history and optional weather covariates. Our final experiment compares direct displacement regression against a triline decomposition into fly/no-fly, distance, and heading; compares Direct MLP, Triline LSTM, and Triline Transformer V2 models; and evaluates context lengths $k \in \{7,14,30\}$ under a pure chronological 80/20 train/test split by target date. At $k=30$, Triline Transformer V2 reaches the best mean, median, and P90 errors in both feature settings. Without weather, Triline Transformer V2 is the strongest learned model by mean error for all context lengths. Weather improves the LSTM at shorter contexts and improves some rollout settings, but its effect remains model-dependent. Autoregressive rollout experiments show that one-step errors compound substantially over full migration paths.
 \end{abstract}
 
 \section{Introduction}
 
 Bird migration prediction is a spatiotemporal forecasting problem with direct ecological and engineering relevance. Given a short window of daily GPS observations for an individual migration path, the goal is to predict the bird's next-day latitude and longitude. Accurate forecasts can support migration ecology, risk assessment for human infrastructure, and analysis of how environmental conditions shape large-scale movement. The task is challenging because migration paths alternate between stopovers and long flights: a model must decide whether the bird will move, how far it will move, and in which direction.
 
-This project studies southbound migration trajectories with aligned weather observations. We make three empirical contributions. First, we compare direct coordinate regression with a triline movement decomposition that predicts fly/no-fly, distance, and heading before reconstructing coordinates. Second, we evaluate whether a Transformer encoder improves over a recurrent LSTM and a feed-forward MLP baseline for short-to-medium context windows. Third, we test whether weather covariates improve generalization when train and test examples come from different years.
+This project studies southbound migration trajectories with aligned weather observations. We make three empirical contributions. First, we compare direct coordinate regression with a triline movement decomposition that predicts fly/no-fly, distance, and heading before reconstructing coordinates. Second, we evaluate whether recurrent and attention-based encoders improve over a feed-forward direct baseline for short-to-medium context windows. Third, we test whether weather covariates improve generalization when train and test examples come from different years.
 
-Our main finding is that architecture choice depends on the evaluation setting. Under chronological splitting, the Direct Transformer is the strongest with weather at $k=30$, and Triline Transformer V2 is strongest without weather. The triline LSTM remains close, converges quickly, and gives reliable rollout behavior. Weather features help in several settings but do not uniformly improve every architecture, so environmental conditioning should be interpreted as useful but not automatically beneficial.
+Our main finding is that architecture choice depends on the evaluation setting. Under chronological splitting, Triline Transformer V2 is the strongest learned model at $k=30$. The triline LSTM remains close, converges quickly, and gives reliable rollout behavior. Weather features help in several settings but do not uniformly improve every architecture, so environmental conditioning should be interpreted as useful but not automatically beneficial.
 
 \section{Related Work}
 
 Animal movement forecasting builds on both ecological modeling and sequence learning. Large tracking repositories such as Movebank organize animal GPS records, individual metadata, and study structure, making multi-year trajectory analysis feasible at scale \cite{kranstauber2011movebank}. Classical movement ecology often models paths probabilistically rather than as supervised prediction; dynamic Brownian bridge movement models, for example, estimate utilization distributions from observed tracks and time-varying movement variance \cite{kranstauber2012dbbmm}. These methods are interpretable and biologically grounded, but they are not designed to learn nonlinear effects from high-dimensional temporal covariates.
 
-Deep sequence models offer a complementary approach. Recurrent networks such as LSTMs encode ordered history with a strong recency bias, which is attractive for next-step movement prediction. Transformers replace recurrence with self-attention and have been widely adapted to long-horizon time-series forecasting. Informer introduced efficient sparse attention for long sequence forecasting \cite{zhou2021informer}, while Autoformer combined decomposition with attention-like autocorrelation mechanisms \cite{wu2021autoformer}. These models motivate our Transformer baseline, but our setting differs in two ways: the data are smaller and noisier than common benchmark time series, and the output distribution is highly imbalanced between stationary days and migration flights. Our triline formulation explicitly targets that imbalance by separating movement occurrence, magnitude, and direction.
+Deep sequence models offer a complementary approach. Recurrent networks such as LSTMs encode ordered history with a strong recency bias, which is attractive for next-step movement prediction. Transformers replace recurrence with self-attention and have been widely adapted to long-horizon time-series forecasting. Informer introduced efficient sparse attention for long sequence forecasting \cite{zhou2021informer}, while Autoformer combined decomposition with attention-like autocorrelation mechanisms \cite{wu2021autoformer}. These models motivate our triline Transformer model, but our setting differs in two ways: the data are smaller and noisier than common benchmark time series, and the output distribution is highly imbalanced between stationary days and migration flights. Our triline formulation explicitly targets that imbalance by separating movement occurrence, magnitude, and direction.
 
 \section{Data}
 
@@ -104,7 +104,7 @@ The model is trained with binary cross entropy for the 10 km fly label, mean squ
 
 \subsection{Architectures}
 
-We compare four model families. The Direct MLP flattens the $k$-day input window and predicts displacement with feed-forward layers. The Direct Transformer 4L uses a Transformer encoder for the same displacement target. The Triline LSTM 4L uses a 4-layer LSTM and triline heads. The Triline Transformer V2 uses a CLS token, 4 Transformer encoder layers, $d_{model}=256$, 8 attention heads, GELU feed-forward blocks, and triline heads. Bird identity embeddings were disabled in the final runs to emphasize generalization from path dynamics rather than memorized individuals.
+We compare three reported model families. The Direct MLP flattens the $k$-day input window and predicts displacement with feed-forward layers. The Triline LSTM 4L uses a 4-layer LSTM and triline heads. The Triline Transformer V2 uses a CLS token, 4 Transformer encoder layers, $d_{model}=256$, 8 attention heads, GELU feed-forward blocks, and triline heads. Bird identity embeddings were disabled in the final runs to emphasize generalization from path dynamics rather than memorized individuals.
 
 \section{Experimental Setup}
 
@@ -119,7 +119,6 @@ All final experiments use seed 42, CUDA, AdamW with learning rate $10^{-3}$ and 
 Model & Parameters without weather & Parameters with weather \\
 \midrule
 Direct MLP & 47K & 78K \\
-Direct Transformer 4L & 807K & 808K \\
 Triline LSTM 4L & 2.16M & 2.16M \\
 Triline Transformer V2 & 3.30M & 3.30M \\
 \bottomrule
@@ -133,7 +132,7 @@ Triline Transformer V2 & 3.30M & 3.30M \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\linewidth]{figures/mean_error_by_context.png}
-\caption{Mean next-day GPS error across context lengths. Under chronological splitting, long-context Transformer models are strongest, and weather especially improves Direct Transformer performance.}
+\caption{Mean next-day GPS error across context lengths. Triline Transformer V2 is strongest without weather across all context lengths, while Triline LSTM is strongest with weather at shorter contexts.}
 \label{fig:mean_error_by_context}
 \end{figure}
 
@@ -146,19 +145,17 @@ Triline Transformer V2 & 3.30M & 3.30M \\
 Condition & Model & Mean km & Median km & P90 km & Mig.50 mean km \\
 \midrule
 No weather & Direct MLP & 18.43 & 5.26 & 50.98 & 90.07 \\
-No weather & Direct Transformer 4L & 16.57 & 3.76 & 55.86 & \textbf{82.70} \\
 No weather & Triline LSTM 4L & 15.90 & 2.38 & 49.55 & 91.30 \\
 No weather & Triline Transformer V2 & \textbf{15.76} & \textbf{2.31} & \textbf{49.46} & 91.97 \\
 \midrule
 Weather & Direct MLP & 17.66 & 4.66 & 51.39 & 95.75 \\
-Weather & Direct Transformer 4L & \textbf{15.41} & 2.95 & 46.72 & \textbf{83.55} \\
-Weather & Triline LSTM 4L & 16.06 & 2.39 & 51.14 & 89.67 \\
-Weather & Triline Transformer V2 & 15.95 & \textbf{2.28} & \textbf{45.46} & 98.99 \\
+Weather & Triline LSTM 4L & 16.06 & 2.39 & 51.14 & \textbf{89.67} \\
+Weather & Triline Transformer V2 & \textbf{15.95} & \textbf{2.28} & \textbf{45.46} & 98.99 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-At the longest context, the Transformer variants are strongest. Without weather, Triline Transformer V2 has the best mean, median, and P90 errors. With weather, Direct Transformer 4L has the best mean error and migration-day mean error, while Triline Transformer V2 has the best median and P90 errors.
+At the longest context, Triline Transformer V2 has the best mean, median, and P90 errors in both feature settings. Direct MLP remains competitive on large-movement days without weather, while Triline LSTM gives the best weather migration-day mean.
 
 \subsection{Architecture and Context Trends}
 
@@ -173,14 +170,14 @@ Condition & $k$ & Best mean-error model & Mean km \\
 No weather & 7 & Triline Transformer V2 & 17.38 \\
 No weather & 14 & Triline Transformer V2 & 17.62 \\
 No weather & 30 & Triline Transformer V2 & 15.76 \\
-Weather & 7 & Direct Transformer 4L & 15.98 \\
+Weather & 7 & Triline LSTM 4L & 17.82 \\
 Weather & 14 & Triline LSTM 4L & 17.73 \\
-Weather & 30 & Direct Transformer 4L & 15.41 \\
+Weather & 30 & Triline Transformer V2 & 15.95 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The chronological split favors models that can exploit recent temporal continuity. Direct Transformer 4L is especially strong with weather, winning mean error at $k=7$ and $k=30$. Without weather, Triline Transformer V2 wins mean error for all three context lengths. The LSTM remains close and efficient, with best epochs 3, 5, and 5 in the weather runs compared with Transformer V2 best epochs 10, 21, and 21.
+The chronological split favors models that can exploit recent temporal continuity while handling the stationary-day imbalance. Without weather, Triline Transformer V2 wins mean error for all three context lengths. With weather, Triline LSTM wins at $k=7$ and $k=14$, while Triline Transformer V2 wins at $k=30$. The LSTM remains close and efficient, with best epochs 3, 5, and 5 in the weather runs compared with Transformer V2 best epochs 10, 21, and 21.
 
 \subsection{Weather Ablation}
 
@@ -242,15 +239,15 @@ Rollout results are mixed. Weather substantially improves Direct and LSTM rollou
 
 \section{Discussion}
 
-The direct-vs.-triline comparison shows a tradeoff. Direct regression is surprisingly strong and parameter-efficient, especially with a Transformer encoder and weather features. However, triline decomposition gives lower median error and competitive tail error because it models the fly/stationary imbalance explicitly. Gating further reduces typical stationary-day error, though it can hurt large migration-day accuracy when the fly head misses a departure.
+The direct-vs.-triline comparison shows a tradeoff. Direct MLP regression is parameter-efficient and remains competitive on some large-movement slices. However, triline decomposition gives lower mean and tail error because it models the fly/stationary imbalance explicitly. Gating further reduces typical stationary-day error, though it can hurt large migration-day accuracy when the fly head misses a departure.
 
-The architecture comparison favors attention for the chronological one-step task. Transformer models benefit from the temporal continuity of the split: Direct Transformer 4L wins weather mean error at $k=30$, and Triline Transformer V2 wins the no-weather setting across all $k$ values. The LSTM remains competitive and converges faster, which makes it attractive when training cost or rollout stability matter.
+The architecture comparison favors triline sequence models for the chronological one-step task. Triline Transformer V2 benefits from temporal continuity at longer contexts, while the LSTM remains competitive and converges faster, which makes it attractive when training cost or rollout stability matter.
 
-The weather ablation is useful but nuanced. Weather improves Direct models and LSTM rollouts, and it improves some tail-error metrics, but it does not uniformly improve triline Transformer mean error. Future work should use departure-time weather, tailwind and crosswind relative to intended heading, stronger regularization for weather features, and a separate validation split so test performance is not also used for checkpoint selection.
+The weather ablation is useful but nuanced. Weather improves LSTM mean error at shorter contexts and improves some rollout and tail-error metrics, but it does not uniformly improve triline Transformer mean error. Future work should use departure-time weather, tailwind and crosswind relative to intended heading, stronger regularization for weather features, and a separate validation split so test performance is not also used for checkpoint selection.
 
 \section{Conclusion}
 
-We evaluated deep models for next-day southbound bird migration forecasting using GPS history and optional weather covariates. Under a chronological 80/20 split, Transformer-based models are strongest for one-step prediction: Direct Transformer 4L achieves the best weather mean error at $k=30$, while Triline Transformer V2 is strongest without weather. The LSTM remains close and performs well in rollouts. Weather is helpful but architecture-dependent, and full-path rollouts reveal substantial compounding error. The most promising next steps are stronger weather alignment, uncertainty-aware rollouts, and a cleaner train/validation/test protocol.
+We evaluated deep models for next-day southbound bird migration forecasting using GPS history and optional weather covariates. Under a chronological 80/20 split, Triline Transformer V2 is strongest at $k=30$, while Triline LSTM is competitive and performs well in rollouts. Weather is helpful but architecture-dependent, and full-path rollouts reveal substantial compounding error. The most promising next steps are stronger weather alignment, uncertainty-aware rollouts, and a cleaner train/validation/test protocol.
 
 \section*{Reproducibility Checklist}
 

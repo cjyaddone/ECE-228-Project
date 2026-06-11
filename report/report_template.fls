@@ -178,11 +178,30 @@ INPUT E:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
 INPUT E:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx10.tfm
 INPUT E:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx7.tfm
 INPUT E:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx5.tfm
-INPUT E:\Program Files\MiKTeX\tex\latex\psnfss\ts1ptm.fd
-INPUT E:\Program Files\MiKTeX\tex\latex\psnfss\ts1ptm.fd
-INPUT E:\Program Files\MiKTeX\tex\latex\psnfss\ts1ptm.fd
-INPUT E:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmr8c.tfm
-INPUT E:\Program Files\MiKTeX\fonts\vf\adobe\times\ptmr8c.vf
+INPUT .\figures\mean_error_by_context.png
+INPUT .\figures\mean_error_by_context.png
+INPUT .\figures\mean_error_by_context.png
+INPUT .\figures\mean_error_by_context.png
+INPUT .\figures\mean_error_by_context.png
+INPUT .\figures\mean_error_by_context.png
+INPUT .\figures\mean_error_by_context.png
+INPUT .\figures\weather_delta_by_context.png
+INPUT .\figures\weather_delta_by_context.png
+INPUT .\figures\weather_delta_by_context.png
+INPUT .\figures\weather_delta_by_context.png
+INPUT .\figures\weather_delta_by_context.png
+INPUT .\figures\weather_delta_by_context.png
+INPUT .\figures\weather_delta_by_context.png
+INPUT .\figures\rollout_mean_error.png
+INPUT .\figures\rollout_mean_error.png
+INPUT .\figures\rollout_mean_error.png
+INPUT .\figures\rollout_mean_error.png
+INPUT .\figures\rollout_mean_error.png
+INPUT .\figures\rollout_mean_error.png
+INPUT .\figures\rollout_mean_error.png
+INPUT E:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmri7t.tfm
+INPUT E:\Program Files\MiKTeX\fonts\vf\adobe\times\ptmri7t.vf
+INPUT E:\Program Files\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT report_template.aux
 INPUT .\report_template.out
 INPUT .\report_template.out
@@ -208,3 +227,5 @@ INPUT E:\Program Files\MiKTeX\fonts\type1\urw\times\utmb8a.pfb
 INPUT E:\Program Files\MiKTeX\fonts\type1\urw\times\utmb8a.pfb
 INPUT E:\Program Files\MiKTeX\fonts\type1\urw\times\utmr8a.pfb
 INPUT E:\Program Files\MiKTeX\fonts\type1\urw\times\utmr8a.pfb
+INPUT E:\Program Files\MiKTeX\fonts\type1\urw\times\utmri8a.pfb
+INPUT E:\Program Files\MiKTeX\fonts\type1\urw\times\utmri8a.pfb
